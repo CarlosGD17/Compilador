@@ -486,7 +486,6 @@ public class azulAL {
         reservada[8]="mientras";
         reservada[9]="fin_mientras";
 
-
         if (!xArchivo(entrada).exists()) {
             System.out.println("\n\nERROR: El archivo " + entrada + " no existe :(");
             System.exit(4);
