@@ -16,14 +16,12 @@ public class azulAL {
     static int Renglon = 1;
     static String[] reservada = new String[15];
 
-    public static boolean creaEscribeArchivo(File xFile, String mensaje) {
+    public static void creaEscribeArchivo(File xFile, String mensaje) {
         try {
             PrintWriter fileOut = new PrintWriter(new FileWriter(xFile, true));
             fileOut.println(mensaje);
             fileOut.close();
-            return true;
-        } catch (IOException ex) {
-            return false;
+        } catch (IOException ignored) {
         }
     }
 
