@@ -14,7 +14,8 @@ public class azulAL {
     static String salida = "";
     static String MiToken = "";
     static int Renglon = 1;
-    static String[] reservada = new String[15];
+    // 10 palabras reservadas
+    static String[] reservada = new String[10];
 
     public static void creaEscribeArchivo(File xFile, String mensaje) {
         try {
@@ -25,17 +26,17 @@ public class azulAL {
         }
     }
 
-    public static boolean es_any(int x){
+    public static boolean esAny(int x){
         // todo excepto \t, \n, eof
         return x != 10 && x != 13 && x != 255;
     }
 
-    public static boolean es_delim(int x) {
+    public static boolean esDelim(int x) {
         // si es CR, LF, TAB, espacio
         return x == 9 || x == 10 || x == 13 || x == 32;
     }
 
-    public static String ob_lex() {
+    public static String obLex() {
         StringBuilder x = new StringBuilder();
         for (int i = a_i; i < a_a; i++)
             x.append(linea[i]);
@@ -46,7 +47,7 @@ public class azulAL {
         return new File(xName);
     }
 
-    public static int lee_car() {
+    public static int leeCar() {
         if (a_a <= filesize - 1) {
             if (linea[a_a] == 10) {
                 Renglon++;
@@ -99,8 +100,8 @@ public class azulAL {
         return ((c >= 48 && c <= 57));
     }
 
-    public static boolean es_reservada(String x){
-        for(int i = 0; i <= 1; i++){
+    public static boolean esReservada(String x){
+        for(int i = 0; i < reservada.length; i++){
             if(reservada[i].equals(x)) {
                 return true;
             }
@@ -128,16 +129,16 @@ public class azulAL {
             //System.out.println("Diagrama: " +ESTADO);
             switch (ESTADO) {
                 case 0 -> {
-                    c = lee_car();
-                    if(es_delim(c)){
+                    c = leeCar();
+                    if(esDelim(c)){
                         ESTADO = 1;
                     } else{
                         ESTADO = DIAGRAMA();
                     }
                 }
                 case 1 -> {
-                    c = lee_car();
-                    if(es_delim(c)) {
+                    c = leeCar();
+                    if(esDelim(c)) {
                         ESTADO = 1;
                     } else{
                         ESTADO = 2;
@@ -145,12 +146,12 @@ public class azulAL {
                 }
                 case 2 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("nosirve");
                 }
                 case 3 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esLetra()){
                         ESTADO = 4;
                     } else{
@@ -158,7 +159,7 @@ public class azulAL {
                     }
                 }
                 case 4 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esLetra() || esDigito()){
                         ESTADO = 4;
                     } else if(c == '_'){
@@ -168,7 +169,7 @@ public class azulAL {
                     }
                 }
                 case 5 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esLetra() || esDigito()){
                         ESTADO = 4;
                     } else{
@@ -177,15 +178,15 @@ public class azulAL {
                 }
                 case 6 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
-                    if(es_reservada(LEX)){
+                    if(esReservada(LEX)){
                         return LEX;
                     }
                     return ("id");
                 }
                 case 7 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esDigito()){
                         ESTADO = 8;
                     } else{
@@ -193,7 +194,7 @@ public class azulAL {
                     }
                 }
                 case 8 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esDigito()){
                         ESTADO = 8;
                     } else if(c == '.'){
@@ -203,7 +204,7 @@ public class azulAL {
                     }
                 }
                 case 9 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esDigito()){
                         ESTADO = 10;
                     } else{
@@ -211,7 +212,7 @@ public class azulAL {
                     }
                 }
                 case 10 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esDigito()){
                         ESTADO = 10;
                     } else{
@@ -220,12 +221,12 @@ public class azulAL {
                 }
                 case 11 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("dec");
                 }
                 case 12 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esDigito()){
                         ESTADO = 13;
                     } else{
@@ -233,7 +234,7 @@ public class azulAL {
                     }
                 }
                 case 13 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(esDigito()){
                         ESTADO = 13;
                     } else{
@@ -242,12 +243,12 @@ public class azulAL {
                 }
                 case 14 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("ent");
                 }
                 case 15 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(c == '/'){
                         ESTADO = 16;
                     } else{
@@ -255,7 +256,7 @@ public class azulAL {
                     }
                 }
                 case 16 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(c == '/'){
                         ESTADO = 17;
                     } else{
@@ -263,8 +264,8 @@ public class azulAL {
                     }
                 }
                 case 17 -> {
-                    c = lee_car();
-                    if(es_any(c)){
+                    c = leeCar();
+                    if(esAny(c)){
                         ESTADO = 17;
                     } else{
                         ESTADO = 18;
@@ -272,12 +273,12 @@ public class azulAL {
                 }
                 case 18 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("nosirve");
                 }
                 case 19 -> {
-                    c = lee_car();
+                    c = leeCar();
                     switch (c){
                         case '+' -> ESTADO = 20;
                         case '-' -> ESTADO = 21;
@@ -288,62 +289,62 @@ public class azulAL {
                         case '{' -> ESTADO = 26;
                         case '}' -> ESTADO = 27;
                         case ':' -> ESTADO = 28;
-                        case '.' -> ESTADO = 29;
+                        case ',' -> ESTADO = 29;
                         default -> ESTADO = DIAGRAMA();
                     }
                 }
                 case 20 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("+");
                 }
                 case 21 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("-");
                 }
                 case 22 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("*");
                 }
                 case 23 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("/");
                 }
                 case 24 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("(");
                 }
                 case 25 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return (")");
                 }
                 case 26 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("{");
                 }
                 case 27 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("}");
                 }
                 case 28 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return (":");
                 }
                 case 29 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
-                    return (".");
+                    return (",");
                 }
                 case 30 -> {
-                    c = lee_car();
+                    c = leeCar();
                     switch (c){
                         case '=' -> ESTADO = 31;
                         case '<' -> ESTADO = 37;
@@ -353,7 +354,7 @@ public class azulAL {
                     }
                 }
                 case 31 -> {
-                    c = lee_car();
+                    c = leeCar();
                     switch (c){
                         case '/' -> ESTADO = 32;
                         case '>' -> ESTADO = 34;
@@ -362,7 +363,7 @@ public class azulAL {
                     }
                 }
                 case 32 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(c == '='){
                         ESTADO = 33;
                     } else{
@@ -370,28 +371,28 @@ public class azulAL {
                     }
                 }
                 case 33 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("dif");
                 }
                 case 34 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("mayi");
                 }
                 case 35 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("meni");
                 }
                 case 36 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("igual");
                 }
                 case 37 -> {
-                    c = lee_car();
+                    c = leeCar();
                     switch (c){
                         case '>' -> ESTADO = 38;
                         case '=' -> ESTADO = 39;
@@ -400,28 +401,28 @@ public class azulAL {
                     }
                 }
                 case 38 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("dif");
                 }
                 case 39 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("meni");
                 }
                 case 40 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("asig");
                 }
                 case 41 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("men");
                 }
                 case 42 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(c == '=') {
                         ESTADO = 43;
                     } else{
@@ -429,18 +430,18 @@ public class azulAL {
                     }
                 }
                 case 43 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("mayi");
                 }
                 case 44 -> {
                     a_a--;
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("may");
                 }
                 case 45 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(c == '='){
                         ESTADO = 46;
                     } else{
@@ -448,12 +449,12 @@ public class azulAL {
                     }
                 }
                 case 46 -> {
-                    LEX = ob_lex();
+                    LEX = obLex();
                     a_i = a_a;
                     return ("dif");
                 }
                 case 47 -> {
-                    c = lee_car();
+                    c = leeCar();
                     if(c == 255){
                         ESTADO = 48;
                     } else{
