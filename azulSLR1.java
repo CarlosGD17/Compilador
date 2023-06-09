@@ -5,16 +5,17 @@ import static java.lang.System.exit;
 public class azulSLR1 {
 
     static String a, RENGLON, LEX;
-    static String Entrada, Salida;
+    static String Entrada;
     static int Posicion = 0;
 
     static String[] terminales = new String[31];
     static String[] noTerminales = new String[17];
 
-    static String[] parteIzquierda = new String[37];
-    static int[] tamanoParteDerecha = new int[37];
+    static int numeroDeProducciones = 37;
+    static String[] parteIzquierda = new String[numeroDeProducciones];
+    static int[] tamanoParteDerecha = new int[numeroDeProducciones];
 
-    static int[][] M = new int[68][48];
+    static int[][] M = new int[68][terminales.length + noTerminales.length];
 
     static String[] pila = new String[1117];
     static int tope = -1;
@@ -74,7 +75,7 @@ public class azulSLR1 {
     public static int noTerminal(String X){
         for(int i = 0; i < noTerminales.length; i++){
             if (X.equals(noTerminales[i])){
-                return i + 8;
+                return i + terminales.length;
             }
         }
         return -1;
@@ -115,134 +116,75 @@ public class azulSLR1 {
         }
 
         // terminales
-        terminales[0]="datos";
-        terminales[1]="fin_datos";
-        terminales[2]=":";
-        terminales[3]="id";
-        terminales[4]=",";
-        terminales[5]="{";
-        terminales[6]="}";
-        terminales[7]="entero";
-        terminales[8]="decimal";
-        terminales[9]="cierto";
-        terminales[10]="(";
-        terminales[11]=")";
-        terminales[12]="haz";
-        terminales[13]="falso";
-        terminales[14]="fin_cond";
+        terminales[0]="datos";          terminales[16]="fin_mientras";
+        terminales[1]="fin_datos";      terminales[17]="asig";
+        terminales[2]=":";              terminales[18]="+";
+        terminales[3]="id";             terminales[19]="-";
+        terminales[4]=",";              terminales[20]="*";
+        terminales[5]="{";              terminales[21]="/";
+        terminales[6]="}";              terminales[22]="ent";
+        terminales[7]="entero";         terminales[23]="dec";
+        terminales[8]="decimal";        terminales[24]="may";
+        terminales[9]="cierto";         terminales[25]="men";
+        terminales[10]="(";             terminales[26]="mayi";
+        terminales[11]=")";             terminales[27]="meni";
+        terminales[12]="haz";           terminales[28]="igual";
+        terminales[13]="falso";         terminales[29]="dif";
+        terminales[14]="fin_cond";      terminales[30]="fin";
         terminales[15]="mientras";
-        terminales[16]="fin_mientras";
-        terminales[17]="asig";
-        terminales[18]="+";
-        terminales[19]="-";
-        terminales[20]="*";
-        terminales[21]="/";
-        terminales[22]="ent";
-        terminales[23]="dec";
-        terminales[24]="may";
-        terminales[25]="men";
-        terminales[26]="mayi";
-        terminales[27]="meni";
-        terminales[28]="igual";
-        terminales[29]="dif";
-        terminales[30]="fin";
 
         // no terminales
-        noTerminales[0]="PROGP";
-        noTerminales[1]="PROG";
-        noTerminales[2]="DATSEC";
-        noTerminales[3]="VARS";
-        noTerminales[4]="LISTA";
-        noTerminales[5]="PRIN";
-        noTerminales[6]="TIPO";
-        noTerminales[7]="BLQ";
+        noTerminales[0]="PROGP";        noTerminales[9]="COND";
+        noTerminales[1]="PROG";         noTerminales[10]="CICLO";
+        noTerminales[2]="DATSEC";       noTerminales[11]="ASIG";
+        noTerminales[3]="VARS";         noTerminales[12]="EXP";
+        noTerminales[4]="LISTA";        noTerminales[13]="E";
+        noTerminales[5]="PRIN";         noTerminales[14]="F";
+        noTerminales[6]="TIPO";         noTerminales[15]="S";
+        noTerminales[7]="BLQ";          noTerminales[16]="OP";
         noTerminales[8]="INST";
-        noTerminales[9]="COND";
-        noTerminales[10]="CICLO";
-        noTerminales[11]="ASIG";
-        noTerminales[12]="EXP";
-        noTerminales[13]="E";
-        noTerminales[14]="F";
-        noTerminales[15]="S";
-        noTerminales[16]="OP";
 
         // parte izquierda de la produccion
-        parteIzquierda[0]="PROGP";
-        parteIzquierda[1]="PROG";
-        parteIzquierda[2]="DATSEC";
-        parteIzquierda[3]="DATSEC";
-        parteIzquierda[4]="VARS";
-        parteIzquierda[5]="VARS";
-        parteIzquierda[6]="LISTA";
-        parteIzquierda[7]="LISTA";
-        parteIzquierda[8]="PRIN";
-        parteIzquierda[9]="TIPO";
-        parteIzquierda[10]="TIPO";
-        parteIzquierda[11]="BLQ";
-        parteIzquierda[12]="BLQ";
-        parteIzquierda[13]="INST";
-        parteIzquierda[14]="INST";
-        parteIzquierda[15]="INST";
-        parteIzquierda[16]="COND";
-        parteIzquierda[17]="COND";
+        parteIzquierda[0]="PROGP";      parteIzquierda[19]="ASIG";
+        parteIzquierda[1]="PROG";       parteIzquierda[20]="EXP";
+        parteIzquierda[2]="DATSEC";     parteIzquierda[21]="E";
+        parteIzquierda[3]="DATSEC";     parteIzquierda[22]="E";
+        parteIzquierda[4]="VARS";       parteIzquierda[23]="E";
+        parteIzquierda[5]="VARS";       parteIzquierda[24]="F";
+        parteIzquierda[6]="LISTA";      parteIzquierda[25]="F";
+        parteIzquierda[7]="LISTA";      parteIzquierda[26]="F";
+        parteIzquierda[8]="PRIN";       parteIzquierda[27]="S";
+        parteIzquierda[9]="TIPO";       parteIzquierda[28]="S";
+        parteIzquierda[10]="TIPO";      parteIzquierda[29]="S";
+        parteIzquierda[11]="BLQ";       parteIzquierda[30]="S";
+        parteIzquierda[12]="BLQ";       parteIzquierda[31]="OP";
+        parteIzquierda[13]="INST";      parteIzquierda[32]="OP";
+        parteIzquierda[14]="INST";      parteIzquierda[33]="OP";
+        parteIzquierda[15]="INST";      parteIzquierda[34]="OP";
+        parteIzquierda[16]="COND";      parteIzquierda[35]="OP";
+        parteIzquierda[17]="COND";      parteIzquierda[36]="OP";
         parteIzquierda[18]="CICLO";
-        parteIzquierda[19]="ASIG";
-        parteIzquierda[20]="EXP";
-        parteIzquierda[21]="E";
-        parteIzquierda[22]="E";
-        parteIzquierda[23]="E";
-        parteIzquierda[24]="F";
-        parteIzquierda[25]="F";
-        parteIzquierda[26]="F";
-        parteIzquierda[27]="S";
-        parteIzquierda[28]="S";
-        parteIzquierda[29]="S";
-        parteIzquierda[30]="S";
-        parteIzquierda[31]="OP";
-        parteIzquierda[32]="OP";
-        parteIzquierda[33]="OP";
-        parteIzquierda[34]="OP";
-        parteIzquierda[35]="OP";
-        parteIzquierda[36]="OP";
 
         // tamano parte derecha de la produccion
-        tamanoParteDerecha[0]=1;
-        tamanoParteDerecha[1]=2;
-        tamanoParteDerecha[2]=3;
-        tamanoParteDerecha[3]=0;
-        tamanoParteDerecha[4]=4;
-        tamanoParteDerecha[5]=3;
-        tamanoParteDerecha[6]=3;
-        tamanoParteDerecha[7]=1;
-        tamanoParteDerecha[8]=3;
-        tamanoParteDerecha[9]=1;
-        tamanoParteDerecha[10]=1;
-        tamanoParteDerecha[11]=2;
-        tamanoParteDerecha[12]=1;
-        tamanoParteDerecha[13]=1;
-        tamanoParteDerecha[14]=1;
-        tamanoParteDerecha[15]=1;
-        tamanoParteDerecha[16]=9;
-        tamanoParteDerecha[17]=7;
+        tamanoParteDerecha[0]=1;        tamanoParteDerecha[19]=3;
+        tamanoParteDerecha[1]=2;        tamanoParteDerecha[20]=3;
+        tamanoParteDerecha[2]=3;        tamanoParteDerecha[21]=3;
+        tamanoParteDerecha[3]=0;        tamanoParteDerecha[22]=3;
+        tamanoParteDerecha[4]=4;        tamanoParteDerecha[23]=1;
+        tamanoParteDerecha[5]=3;        tamanoParteDerecha[24]=3;
+        tamanoParteDerecha[6]=3;        tamanoParteDerecha[25]=3;
+        tamanoParteDerecha[7]=1;        tamanoParteDerecha[26]=1;
+        tamanoParteDerecha[8]=3;        tamanoParteDerecha[27]=1;
+        tamanoParteDerecha[9]=1;        tamanoParteDerecha[28]=1;
+        tamanoParteDerecha[10]=1;       tamanoParteDerecha[29]=1;
+        tamanoParteDerecha[11]=2;       tamanoParteDerecha[30]=3;
+        tamanoParteDerecha[12]=1;       tamanoParteDerecha[31]=1;
+        tamanoParteDerecha[13]=1;       tamanoParteDerecha[32]=1;
+        tamanoParteDerecha[14]=1;       tamanoParteDerecha[33]=1;
+        tamanoParteDerecha[15]=1;       tamanoParteDerecha[34]=1;
+        tamanoParteDerecha[16]=9;       tamanoParteDerecha[35]=1;
+        tamanoParteDerecha[17]=7;       tamanoParteDerecha[36]=1;
         tamanoParteDerecha[18]=6;
-        tamanoParteDerecha[19]=3;
-        tamanoParteDerecha[20]=3;
-        tamanoParteDerecha[21]=3;
-        tamanoParteDerecha[22]=3;
-        tamanoParteDerecha[23]=1;
-        tamanoParteDerecha[24]=3;
-        tamanoParteDerecha[25]=3;
-        tamanoParteDerecha[26]=1;
-        tamanoParteDerecha[27]=1;
-        tamanoParteDerecha[28]=1;
-        tamanoParteDerecha[29]=1;
-        tamanoParteDerecha[30]=3;
-        tamanoParteDerecha[31]=1;
-        tamanoParteDerecha[32]=1;
-        tamanoParteDerecha[33]=1;
-        tamanoParteDerecha[34]=1;
-        tamanoParteDerecha[35]=1;
-        tamanoParteDerecha[36]=1;
 
         // matriz
         for(int i = 0; i < M.length; i++){
@@ -383,9 +325,6 @@ public class azulSLR1 {
 
         do{
             s = pila[tope];
-            System.out.println("tope: " +tope);
-            System.out.println("s: " +s +", a:" +a);
-            System.out.println("[" +Integer.parseInt(s) +"][" +terminal(a) +"]");
             m = M[Integer.parseInt(s)][terminal(a)];
             if(m == 1117){
                 System.out.println("-> Parser SLR terminado con exito   :)");
@@ -394,7 +333,7 @@ public class azulSLR1 {
             } else{
                 if(m > 0){
                     push(a);
-                    push(m + "");
+                    push(String.valueOf(m));
 
                     //cod_shift(m);
 
@@ -411,14 +350,64 @@ public class azulSLR1 {
                     if(M[e][noTerminal(parteIzquierda[m * -1])] == 0) {
                         error();
                     } else {
-                        push(M[e][noTerminal(parteIzquierda[m * -1])] + "");
+                        push(String.valueOf(M[e][noTerminal(parteIzquierda[m * -1])]));
                     }
                 } else{
                     error();
                 }
             }
         }while(true);
-
     }
 
+    public static void cod_shift(int S){
+        if(S == 16 || S == 17 || S == 18 || S == 19){
+            //var = Integer.parseInt(LEX);
+        }
+    }
+
+    public static void cod_reduce(int R){
+        R = -R;
+        switch (R) {
+            case 1 -> {
+                //P_x = C_x;
+                //P_y = C_y;
+            }
+            case 2 -> {
+                //P_x = P_x + C_x;
+                //P_y = P_y + C_y;
+            }
+            case 3 -> {
+                //C_x = N_x;
+                //C_y = N_y;
+            }
+            case 4 -> {
+                //C_x = S_x;
+                //C_y = S_y;
+            }
+            case 5 -> {
+                //C_x = E_x;
+                //C_y = E_y;
+            }
+            case 6 -> {
+                //C_x = O_x;
+                //C_y = O_y;
+            }
+            case 7 -> {
+                //N_x = 0;
+                //N_y = var;
+            }
+            case 8 -> {
+                //S_x = 0;
+                //S_y = -var;
+            }
+            case 9 -> {
+                //E_x = var;
+                //E_y = 0;
+            }
+            case 10 -> {
+                //O_x = -var;
+                //O_y = 0;
+            }
+        }
+    }
 }
