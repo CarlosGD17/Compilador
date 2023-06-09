@@ -245,6 +245,11 @@ public class azulSLR1 {
         tamanoParteDerecha[36]=1;
 
         // matriz
+        for(int i = 0; i < M.length; i++){
+            for(int j = 0; j< M[0].length; j++){
+                M[i][j] = 0;
+            }
+        }
         // shifts
         M[0][0]=3;
         M[2][5]=5;
@@ -369,7 +374,50 @@ public class azulSLR1 {
         M[65][9]=-17;   M[65][3]=-17;   M[65][15]=-17;  M[65][6]=-17;   M[65][13]=-17;  M[65][14]=-17;  M[65][16]=-17;
         M[67][9]=-16;   M[67][3]=-16;   M[67][15]=-16;  M[67][6]=-16;   M[67][13]=-16;  M[67][14]=-16;  M[67][16]=-16;
 
+        // inicia el parser
+        push("0");
+        lee_token(xArchivo(Entrada));
+        String s;
+        int e;
+        int m;
 
+        do{
+            s = pila[tope];
+            System.out.println("tope: " +tope);
+            System.out.println("s: " +s +", a:" +a);
+            System.out.println("[" +Integer.parseInt(s) +"][" +terminal(a) +"]");
+            m = M[Integer.parseInt(s)][terminal(a)];
+            if(m == 1117){
+                System.out.println("-> Parser SLR terminado con exito   :)");
+                //System.out.println("\tCodigo genereado: " +M_res[topeM]);
+                exit(0);
+            } else{
+                if(m > 0){
+                    push(a);
+                    push(m + "");
+
+                    //cod_shift(m);
+
+                    lee_token(xArchivo(Entrada));
+                } else if(m < 0) {
+
+                    //cod_reduce(-m);
+
+                    for (int i = 0; i < tamanoParteDerecha[m * -1] * 2; i++) {
+                        pop();
+                    }
+                    e = Integer.parseInt(pila[tope]);
+                    push(parteIzquierda[m * -1]);
+                    if(M[e][noTerminal(parteIzquierda[m * -1])] == 0) {
+                        error();
+                    } else {
+                        push(M[e][noTerminal(parteIzquierda[m * -1])] + "");
+                    }
+                } else{
+                    error();
+                }
+            }
+        }while(true);
 
     }
 
