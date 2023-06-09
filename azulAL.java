@@ -496,7 +496,7 @@ public class azulAL {
             ESTADO = 0;
             DIAG = 0;
             MiToken = TOKEN();
-            if (!MiToken.equals("basura")) {
+            if (!MiToken.equals("nosirve")) {
                 creaEscribeArchivo(xArchivo(salida), MiToken);
                 creaEscribeArchivo(xArchivo(salida), LEX);
                 creaEscribeArchivo(xArchivo(salida), Renglon + "");
