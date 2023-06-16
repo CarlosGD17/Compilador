@@ -24,6 +24,12 @@ public class azulSLR1 {
     static String Tipo;
     static String TipoDec;
 
+    static int var = -1;
+    static int etq = -1;
+
+    static String tablaSimbolos[][] = new String[117][2];
+    static int xTabla = 0;
+
     public static void lee_token(File xFile) {
         try {
             FileReader fr = new FileReader(xFile);
@@ -109,8 +115,9 @@ public class azulSLR1 {
         pausa();
     }
 
-    public static void GenVar() {
-
+    public static String GenVar() {
+        var += 1;
+        return "V" + var;
     }
 
     public static void ChkTipo(String A, String B) {
@@ -118,7 +125,20 @@ public class azulSLR1 {
     }
 
     public static void Agr_tab(String X, String Y) {
-
+        boolean existe = false;
+        for(int i = 0; i < tablaSimbolos.length; i++){
+            if(tablaSimbolos[i][0].equals(X)){
+                existe = true;
+                break;
+            }
+        }
+        if(!existe){
+            tablaSimbolos[xTabla][0] = X;
+            tablaSimbolos[xTabla][1] = Y;
+            xTabla += 1;
+        } else{
+            error();
+        }
     }
 
     public static String obtenTipo(String X) {
@@ -158,8 +178,9 @@ public class azulSLR1 {
 
     }
 
-    public static void GenEtq() {
-
+    public static String GenEtq() {
+        etq += 1;
+        return "E" + etq;
     }
 
     public static void main(String[] args) {
@@ -380,6 +401,13 @@ public class azulSLR1 {
         do {
             s = pila[tope];
             m = M[Integer.parseInt(s)][terminal(a)];
+
+            System.out.println("LEX: [" +LEX +"]");
+            System.out.println("s: [" +s +"]");
+            System.out.println("a: [" +a +"]");
+            System.out.println("m: [" +m +"]");
+            pausa();
+
             if (m == 1117) {
                 System.out.println("-> Parser SLR terminado con exito   :)");
                 //System.out.println("\tCodigo genereado: " +M_res[topeM]);
@@ -423,11 +451,11 @@ public class azulSLR1 {
             Tipo = obtenTipo(Temp);
         } else if (S == 26) {
             Agr_tab(LEX, TipoDec);
-            DecV = DecV;
-            PALABRA LEX;
+            //DecV = DecV;
+            //PALABRA LEX;
         } else if (S == 16) {
-            VarIzq = LEX;
-            TipoEsp = obtenTipo(VarIzq);
+            //VarIzq = LEX;
+            //TipoEsp = obtenTipo(VarIzq);
         }
     }
 
