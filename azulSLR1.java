@@ -20,15 +20,33 @@ public class azulSLR1 {
     static String[] pila = new String[1117];
     static int tope = -1;
 
+    // reglas sematnticas de los shifts
     static String Temp;
     static String Tipo;
     static String TipoDec;
+    static String VarIzq;
+    static String TipoEsp;
 
     static int var = -1;
     static int etq = -1;
 
-    static String tablaSimbolos[][] = new String[117][2];
+    static String[][] tablaSimbolos = new String[117][2];
     static int xTabla = 0;
+
+    // para las reglas semanticas de los reduce
+    static String PROG_c;
+    static String PRIN_c;
+    static String BLQ_c;
+    static String INST_c;
+    static String CICLO_c;
+    static String ASIG_c;
+    static String COND_c;
+    static String PosA, PosB, PosC;
+    static String E_v, F_v, S_v;
+    static String E_t, F_t, S_t;
+    static String X;
+    static String E_c, F_c, S_c;
+    static String OP_c;
 
     public static void lee_token(File xFile) {
         try {
@@ -66,7 +84,7 @@ public class azulSLR1 {
         try {
             entrada.readLine();
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -120,14 +138,14 @@ public class azulSLR1 {
         return "V" + var;
     }
 
-    public static void ChkTipo(String A, String B) {
-
+    public static String ChkTipo(String A, String B) {
+        return "Tipo de A y B si son iguales";
     }
 
     public static void Agr_tab(String X, String Y) {
         boolean existe = false;
-        for(int i = 0; i < tablaSimbolos.length; i++){
-            if(tablaSimbolos[i][0].equals(X)){
+        for (String[] tablaSimbolo : tablaSimbolos) {
+            if (tablaSimbolo[0].equals(X)) {
                 existe = true;
                 break;
             }
@@ -442,137 +460,142 @@ public class azulSLR1 {
     }
 
     public static void cod_shift(int S) {
-        if (S == 32 || S == 31) {
-            Temp = LEX;
-        } else if (S == 8 || S == 9) {
-            TipoDec = LEX;
-        } else if (S == 33) {
-            Temp = LEX;
-            Tipo = obtenTipo(Temp);
-        } else if (S == 26) {
-            Agr_tab(LEX, TipoDec);
-            //DecV = DecV;
-            //PALABRA LEX;
-        } else if (S == 16) {
-            //VarIzq = LEX;
-            //TipoEsp = obtenTipo(VarIzq);
+        switch (S){
+            case 8, 9 -> {
+                TipoDec = LEX;
+            }
+            case 16 -> {
+                VarIzq = LEX;
+                TipoEsp = obtenTipo(VarIzq);
+            }
+            case 26 -> {
+                Agr_tab(LEX, TipoDec);
+                //DecV = DecV;
+                //PALABRA LEX;
+            }
+            case 31, 32 -> {
+                Temp = LEX;
+            }
+            case 33 -> {
+                Temp = LEX;
+                Tipo = obtenTipo(Temp);
+            }
         }
     }
 
     public static void cod_reduce(int R) {
-        R = -R;
+        //R = -R;
         switch (R) {
             case 1 -> {
-                //P_x = C_x;
-                //P_y = C_y;
-            }
-            case 2 -> {
-                //P_x = P_x + C_x;
-                //P_y = P_y + C_y;
-            }
-            case 3 -> {
-                //C_x = N_x;
-                //C_y = N_y;
-            }
-            case 4 -> {
-                //C_x = S_x;
-                //C_y = S_y;
-            }
-            case 5 -> {
-                //C_x = E_x;
-                //C_y = E_y;
-            }
-            case 6 -> {
-                //C_x = O_x;
-                //C_y = O_y;
-            }
-            case 7 -> {
-                //N_x = 0;
-                //N_y = var;
+                // PROG_c = DecV + PRIN_c + VUELO + FIN;
             }
             case 8 -> {
-                //S_x = 0;
-                //S_y = -var;
-            }
-            case 9 -> {
-                //E_x = var;
-                //E_y = 0;
-            }
-            case 10 -> {
-                //O_x = -var;
-                //O_y = 0;
+                PRIN_c = BLQ_c;
             }
             case 11 -> {
-                //O_x = -var;
-                //O_y = 0;
+                BLQ_c = INST_c + BLQ_c;
             }
             case 12 -> {
-                //O_x = -var;
-                //O_y = 0;
+                BLQ_c = INST_c;
             }
             case 13 -> {
-                //O_x = -var;
-                //O_y = 0;
+                INST_c = COND_c;
             }
             case 14 -> {
-                //O_x = -var;
-                //O_y = 0;
+                INST_c = ASIG_c;
             }
             case 15 -> {
-                //O_x = -var;
-                //O_y = 0;
+                INST_c = CICLO_c;
             }
             case 16 -> {
-                //O_x = -var;
-                //O_y = 0;
+                PosA = GenEtq();
+                PosB = GenEtq();
             }
             case 17 -> {
-                //O_x = -var;
-                //O_y = 0;
+                PosA = GenEtq();
+                PosB = GenEtq();
             }
             case 18 -> {
-                //O_x = -var;
-                //O_y = 0;
+                PosA = GenEtq();
+                PosB = GenEtq();
+                PosC = GenEtq();
             }
             case 19 -> {
-                //O_x = -var;
-                //O_y = 0;
+                ChkTipo(TipoEsp, E_t);
+                // ASIG_c = E_c + "MUE" + E_v + ", " VarIzq;
             }
             case 20 -> {
-                //O_x = -var;
-                //O_y = 0;
+                ChkTipo(E_t, E_t);
             }
             case 21 -> {
-                //O_x = -var;
-                //O_y = 0;
+                E_t = ChkTipo(E_t, F_t);
+                X = GenVar();
+
+                E_v = X;
             }
             case 22 -> {
-                //O_x = -var;
-                //O_y = 0;
+                E_t = ChkTipo(E_t, F_t);
+                X = GenVar();
+                // E_c = E_c + F_c + "MUE" + E_v + ", RA"...
+                E_v = X;
             }
             case 23 -> {
-                //O_x = -var;
-                //O_y = 0;
+                // E_c = F_c;
+                E_v = F_v;
+                E_t = F_t;
             }
             case 24 -> {
-                //O_x = -var;
-                //O_y = 0;
+                F_t = ChkTipo(F_t, S_t);
+                X = GenVar();
+                // F_c = F_c + S_c + "MUE" + F_v;
+                F_v = X;
             }
             case 25 -> {
-                //O_x = -var;
-                //O_y = 0;
+                F_t = ChkTipo(F_t, S_t);
+                X = GenVar();
+                F_c = F_c + S_c + "MUE" + F_v;
+                F_v = X;
             }
             case 26 -> {
-                //O_x = -var;
-                //O_y = 0;
+                F_c = S_c;
+                F_v = S_v;
+                F_t = S_t;
             }
             case 27 -> {
-                //O_x = -var;
-                //O_y = 0;
+                S_c = "";
+                S_v = Temp + 'e';
+                S_t = "entero";
             }
             case 28 -> {
-                //O_x = -var;
-                //O_y = 0;
+                S_c = "";
+                S_v = Temp + 'f';
+                S_t = "decimal";
+            }
+            case 29 -> {
+                S_c = "";
+                S_v = Temp;
+                S_t = Tipo;
+            }
+            case 30 -> {
+                S_c = E_c;
+            }
+            case 31 -> {
+                OP_c = "SMAY";
+            }
+            case 32 -> {
+                OP_c = "SMEN";
+            }
+            case 33 -> {
+                OP_c = "SMAI";
+            }
+            case 34 -> {
+                OP_c = "SMEI";
+            }
+            case 35 -> {
+                OP_c = "SIG";
+            }
+            case 36 -> {
+                OP_c = "SDIF";
             }
         }
     }
