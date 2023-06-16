@@ -1,7 +1,7 @@
 # Compilador
 Dadas las producciones:
 
-|0) | PROGP -> PROG |
+| 0) | PROGP -> PROG |
 1) PROG -> DATASEC PRIN
 2) DATSEC -> datos VARS fin_datos
 3) DATSEC -> epsilon
