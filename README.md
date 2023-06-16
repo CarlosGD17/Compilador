@@ -38,4 +38,4 @@ Dadas las producciones:
 35) OP -> igual
 36) OP -> dif
 
-La clase '*AL.java' recibe un archivo '.prg' como entrada 
+La clase `*Al.java` recibe un archivo `*.prg` como entrada. Esta realiza un analisis lexico del archivo y genera un archivo `*.sal`. Este ultimo archivo es la entrada de la clase `*SLR1.java`, la cual realiza un analisis sintatico y generacion de codigo (a Ensamblador).
