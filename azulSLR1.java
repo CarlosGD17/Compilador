@@ -1,6 +1,8 @@
 import java.io.*;
+import java.util.Objects;
 
 import static java.lang.System.exit;
+import static java.lang.System.in;
 
 public class azulSLR1 {
 
@@ -138,19 +140,17 @@ public class azulSLR1 {
         return "V" + var;
     }
 
-    public static String ChkTipo(String A, String B) {
-        return "Tipo de A y B si son iguales";
+    public static String ChkTipo(String A, String B) { //REVISADO
+        if(A.equals(B)){
+            return obtenTipo(A);
+            //return "Tipo de A y B si son iguales";
+        }
+        System.exit(4);
+        return null;
     }
 
     public static void Agr_tab(String X, String Y) {
-        boolean existe = false;
-        for (String[] tablaSimbolo : tablaSimbolos) {
-            if (tablaSimbolo[0].equals(X)) {
-                existe = true;
-                break;
-            }
-        }
-        if(!existe){
+        if(existeVariable(X) == -1){
             tablaSimbolos[xTabla][0] = X;
             tablaSimbolos[xTabla][1] = Y;
             xTabla += 1;
@@ -159,41 +159,34 @@ public class azulSLR1 {
         }
     }
 
-    public static String obtenTipo(String X) {
-        String tipo = "";
-        try {
-            int num = Integer.parseInt(X);
-            tipo = "ent";
-
-        } catch (NumberFormatException ignored) {
-
+    //Verificar si existe la variable en la tablaSimbolos
+    public static int existeVariable(String variable){
+        // retorn a el indice de variable si esta en la tabla
+        for (int i = 0; i < tablaSimbolos.length; i++) {
+            if (tablaSimbolos[i][0].equals(variable)) {
+                return i;
+            }
         }
-        try {
-            float num = Float.parseFloat(X);
-            tipo = "dec";
-
-        } catch (NumberFormatException ignored) {
-
-        }
-        try {
-            int num = Integer.parseInt(X);
-            tipo = "entero";
-
-        } catch (NumberFormatException ignored) {
-
-        }
-        try {
-            float num = Float.parseFloat(X);
-            tipo = "decimal";
-
-        } catch (NumberFormatException ignored) {
-
-        }
-        return tipo;
+        // si no esta en la tablla, retorna -1
+        return -1;
     }
 
-    public static void instAri(String A, String B) {
+    public static String obtenTipo(String X){ //Verifica si existe en la tabla
+        int indice = existeVariable(X);
+        if(indice != -1){
+            System.out.println("La variable"+X+"existe y es de tipo:");
+            return tablaSimbolos[indice][1];
+        }
+        System.exit(4);
+        return null;
+    }
 
+    public static String instAri(String A, String B) { //REVISADO
+        if(B.equals("decimal")){
+            return A + "F";
+        } else{
+            return A + "E";
+        }
     }
 
     public static String GenEtq() {
@@ -419,12 +412,13 @@ public class azulSLR1 {
         do {
             s = pila[tope];
             m = M[Integer.parseInt(s)][terminal(a)];
-
+            /*
             System.out.println("LEX: [" +LEX +"]");
             System.out.println("s: [" +s +"]");
             System.out.println("a: [" +a +"]");
             System.out.println("m: [" +m +"]");
             pausa();
+             */
 
             if (m == 1117) {
                 System.out.println("-> Parser SLR terminado con exito   :)");
