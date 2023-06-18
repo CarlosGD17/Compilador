@@ -532,7 +532,7 @@ public class azulSLR1 {
                 // EXP  ->  E OP E
                 ChkTipo(E_t, E_t);
                 aux = EXP_c;
-                //EXP_c = EXP_c + EXP_c + "MUE" + E_v + ", RA MUE" + E_v + ", RB " + instAri(CMP, E_t) + "RA, RB " + OP_c[topeOP_c--];
+                EXP_c = EXP_c + EXP_c + "MUE" + E_v + ", RA MUE" + E_v + ", RB " + instAri("CMP", E_t) + "RA, RB " + OP_c[topeOP_c--];
             }
             case 21 -> {
                 E_t = ChkTipo(E_t, F_t);
