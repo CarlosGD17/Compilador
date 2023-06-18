@@ -45,12 +45,17 @@ public class azulSLR1 {
     static String CICLO_c;
     static String ASIG_c;
     static String COND_c;
+    static String EXP_c;
     static String PosA, PosB, PosC;
     static String E_v, F_v, S_v;
     static String E_t, F_t, S_t;
     static String X;
-    static String E_c, F_c, S_c;
-    static String OP_c;
+    static String [] E_c = new String[117], F_c = new String[117], S_c = new String[117];
+    static int topeE_c = -1, topeF_c = -1, topeS_c = -1;
+    static String [] OP_c = new String[117];
+    static int topeOP_c = -1;
+
+    static String aux;
 
     public static void lee_token(File xFile) {
         try {
@@ -424,7 +429,7 @@ public class azulSLR1 {
 
             if (m == 1117) {
                 System.out.println("-> Parser SLR terminado con exito   :)");
-                //System.out.println("\tCodigo genereado: " +M_res[topeM]);
+                System.out.println("\tCodigo genereado: \n" +PROG_c);
                 exit(0);
             } else {
                 if (m > 0) {
@@ -483,12 +488,15 @@ public class azulSLR1 {
         //R = -R;
         switch (R) {
             case 1 -> {
+                // PROG ->  DATASEC PRIN
                 // PROG_c = DecV + PRIN_c + VUELO + FIN;
             }
             case 8 -> {
+                // PRIN ->  { BLQ }
                 PRIN_c = BLQ_c;
             }
             case 11 -> {
+                // BLQ  ->  INST BLQ
                 BLQ_c = INST_c + BLQ_c;
             }
             case 12 -> {
@@ -521,7 +529,10 @@ public class azulSLR1 {
                 // ASIG_c = E_c + "MUE" + E_v + ", " VarIzq;
             }
             case 20 -> {
+                // EXP  ->  E OP E
                 ChkTipo(E_t, E_t);
+                aux = EXP_c;
+                //EXP_c = EXP_c + EXP_c + "MUE" + E_v + ", RA MUE" + E_v + ", RB " + instAri(CMP, E_t) + "RA, RB " + OP_c[topeOP_c--];
             }
             case 21 -> {
                 E_t = ChkTipo(E_t, F_t);
@@ -549,7 +560,8 @@ public class azulSLR1 {
             case 25 -> {
                 F_t = ChkTipo(F_t, S_t);
                 X = GenVar();
-                F_c = F_c + S_c + "MUE" + F_v;
+                aux = F_c[topeF_c--];
+                F_c[++topeF_c] =  aux + S_c[topeS_c--] + "MUE" + F_v;
                 F_v = X;
             }
             case 26 -> {
@@ -558,40 +570,40 @@ public class azulSLR1 {
                 F_t = S_t;
             }
             case 27 -> {
-                S_c = "";
+                S_c[topeS_c] = "";
                 S_v = Temp + 'e';
                 S_t = "entero";
             }
             case 28 -> {
-                S_c = "";
+                S_c[++topeS_c] = "";
                 S_v = Temp + 'f';
                 S_t = "decimal";
             }
             case 29 -> {
-                S_c = "";
+                S_c[++topeS_c] = "";
                 S_v = Temp;
                 S_t = Tipo;
             }
             case 30 -> {
-                S_c = E_c;
+                S_c[++topeS_c] = E_c[topeE_c--];
             }
             case 31 -> {
-                OP_c = "SMAY";
+                OP_c[++topeOP_c] = "SMAY";
             }
             case 32 -> {
-                OP_c = "SMEN";
+                OP_c[++topeOP_c] = "SMEN";
             }
             case 33 -> {
-                OP_c = "SMAI";
+                OP_c[++topeOP_c] = "SMAI";
             }
             case 34 -> {
-                OP_c = "SMEI";
+                OP_c[++topeOP_c] = "SMEI";
             }
             case 35 -> {
-                OP_c = "SIG";
+                OP_c[++topeOP_c] = "SIG";
             }
             case 36 -> {
-                OP_c = "SDIF";
+                OP_c[++topeOP_c] = "SDIF";
             }
         }
     }
