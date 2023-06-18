@@ -29,9 +29,11 @@ public class azulSLR1 {
     static String VarIzq;
     static String TipoEsp;
 
+    // para la generacion de variables y etiquetas
     static int var = -1;
     static int etq = -1;
 
+    // tabla de Simbolos, guarda variables generadas
     static String[][] tablaSimbolos = new String[117][2];
     static int xTabla = 0;
 
