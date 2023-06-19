@@ -572,10 +572,11 @@ public class azulSLR1 {
                 E_v[++topeE_v] = X;
             }
             case 22 -> {
-                E_t = ChkTipo(E_t, F_t);
+                aux = E_t[topeE_t--];
+                E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
                 X = GenVar();
                 // E_c = E_c + F_c + "MUE" + E_v + ", RA"...
-                E_v = X;
+                E_v[++topeE_t] = X;
             }
             case 23 -> {
                 // E_c = F_c;
@@ -583,17 +584,19 @@ public class azulSLR1 {
                 E_t = F_t;
             }
             case 24 -> {
-                F_t = ChkTipo(F_t, S_t);
+                aux = F_t[topeF_t--];
+                F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
                 X = GenVar();
                 // F_c = F_c + S_c + "MUE" + F_v;
-                F_v = X;
+                F_v[++topeF_v] = X;
             }
             case 25 -> {
-                F_t = ChkTipo(F_t, S_t);
+                aux = F_t[topeF_t--];
+                F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
                 X = GenVar();
                 aux = F_c[topeF_c--];
-                F_c[++topeF_c] =  aux + S_c[topeS_c--] + "MUE" + F_v;
-                F_v = X;
+                F_c[++topeF_c] =  aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--];
+                F_v[++topeF_v] = X;
             }
             case 26 -> {
                 F_c = S_c;
@@ -602,18 +605,18 @@ public class azulSLR1 {
             }
             case 27 -> {
                 S_c[topeS_c] = "";
-                S_v = Temp + 'e';
-                S_t = "entero";
+                S_v[++topeS_v] = Temp + 'e';
+                S_t[++topeS_t] = "entero";
             }
             case 28 -> {
                 S_c[++topeS_c] = "";
-                S_v = Temp + 'f';
-                S_t = "decimal";
+                S_v[++topeS_v] = Temp + 'f';
+                S_t[++topeS_t] = "decimal";
             }
             case 29 -> {
                 S_c[++topeS_c] = "";
-                S_v = Temp;
-                S_t = Tipo;
+                S_v[++topeS_v] = Temp;
+                S_t[topeS_t] = Tipo;
             }
             case 30 -> {
                 S_c[++topeS_c] = E_c[topeE_c--];
