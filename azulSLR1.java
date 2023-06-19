@@ -51,10 +51,13 @@ public class azulSLR1 {
     static int topeASIG_c = -1;
     static String [] COND_c = new String[117];
     static int topeCOND_c = -1;
-    static String EXP_c;
+    static String [] EXP_c = new String[117];
+    static int topeEXP_c = -1;
     static String PosA, PosB, PosC;
-    static String E_v, F_v, S_v;
-    static String E_t, F_t, S_t;
+    static String [] E_v = new String[117], F_v = new String[117], S_v = new String[117];
+    static int topeE_v = -1, topeF_v = -1, topeS_v = -1;
+    static String [] E_t = new String[117], F_t = new String[117], S_t = new String[117];
+    static int topeE_t = -1, topeF_t = -1, topeS_t = -1;
     static String X;
     static String [] E_c = new String[117], F_c = new String[117], S_c = new String[117];
     static int topeE_c = -1, topeF_c = -1, topeS_c = -1;
@@ -526,32 +529,47 @@ public class azulSLR1 {
                 // COND -> cierto ( EXP ) haz BLQ falso BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
-                //COND_c[++topeCOND_c] = EXP_c + PosA + BLQ_c[topeBLQ_c--] + ;
+                //COND_c[++topeCOND_c] = EXP_c + PosA + BLQ_c[topeBLQ_c--] + "SAL" + PosB;
             }
             case 17 -> {
+                // COND -> cierto ( EXP ) haz BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
             }
             case 18 -> {
+                // CICLO -> mientras ( EXP ) BLQ fin_mientras
                 PosA = GenEtq();
                 PosB = GenEtq();
                 PosC = GenEtq();
+
             }
             case 19 -> {
-                ChkTipo(TipoEsp, E_t);
-                // ASIG_c = E_c + "MUE" + E_v + ", " VarIzq;
+                // ASIG -> id asig E
+                ChkTipo(TipoEsp, E_t[topeE_t--]);
+                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + " MUE " + E_v[topeE_v--] + ", " + VarIzq;
             }
             case 20 -> {
                 // EXP  ->  E OP E
-                ChkTipo(E_t, E_t);
-                aux = EXP_c;
-                EXP_c = EXP_c + EXP_c + "MUE" + E_v + ", RA MUE" + E_v + ", RB " + instAri("CMP", E_t) + "RA, RB " + OP_c[topeOP_c--];
+                aux = E_t[topeE_t--];
+                ChkTipo(E_t[topeE_t--], aux);
+                // se obtiene E_v 2
+                aux = E_v[topeE_v--] + ", RB " + instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
+                // se obtiene E_v 1
+                aux = E_v[topeE_v--] + ", RA MUE" + aux;
+                // se obtiene E2
+                aux = E_c[topeE_c--] + "MUE" + aux;
+                // se obtiene E1
+                aux = E_c[topeE_c--] + aux;
+                // el resultado se guarda en EXP_c
+                EXP_c[++topeEXP_c] = aux;
             }
             case 21 -> {
-                E_t = ChkTipo(E_t, F_t);
+                // E -> E + F
+                aux = E_t[topeE_t--];
+                E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
                 X = GenVar();
 
-                E_v = X;
+                E_v[++topeE_v] = X;
             }
             case 22 -> {
                 E_t = ChkTipo(E_t, F_t);
