@@ -39,12 +39,18 @@ public class azulSLR1 {
 
     // para las reglas semanticas de los reduce
     static String PROG_c;
-    static String PRIN_c;
-    static String BLQ_c;
-    static String INST_c;
-    static String CICLO_c;
-    static String ASIG_c;
-    static String COND_c;
+    static String [] PRIN_c = new String[117];
+    static int topePrin_c = -1;
+    static String [] BLQ_c = new String[117];
+    static int topeBLQ_c = -1;
+    static String [] INST_c = new String[117];
+    static int topeINST_c = -1;
+    static String [] CICLO_c = new String[117];
+    static int topeCICLO_c = -1;
+    static String [] ASIG_c = new String[117];
+    static int topeASIG_c = -1;
+    static String [] COND_c = new String[117];
+    static int topeCOND_c = -1;
     static String EXP_c;
     static String PosA, PosB, PosC;
     static String E_v, F_v, S_v;
@@ -489,31 +495,38 @@ public class azulSLR1 {
         switch (R) {
             case 1 -> {
                 // PROG ->  DATASEC PRIN
-                // PROG_c = DecV + PRIN_c + VUELO + FIN;
+                // PROG_c = DecV + PRIN_c + "VUEL O FIN";
             }
             case 8 -> {
                 // PRIN ->  { BLQ }
-                PRIN_c = BLQ_c;
+                PRIN_c[++topePrin_c] = BLQ_c[topeBLQ_c--];
             }
             case 11 -> {
                 // BLQ  ->  INST BLQ
-                BLQ_c = INST_c + BLQ_c;
+                aux = BLQ_c[topeBLQ_c--];
+                BLQ_c[++topeBLQ_c] = INST_c[topeINST_c--] + aux;
             }
             case 12 -> {
-                BLQ_c = INST_c;
+                // BLQ -> INST
+                BLQ_c[++topeBLQ_c] = INST_c[topeINST_c--];
             }
             case 13 -> {
-                INST_c = COND_c;
+                // INST -> COND
+                INST_c[++topeINST_c] = COND_c[topeCOND_c--];
             }
             case 14 -> {
-                INST_c = ASIG_c;
+                // INST -> ASIG
+                INST_c[++topeINST_c] = ASIG_c[topeASIG_c--];
             }
             case 15 -> {
-                INST_c = CICLO_c;
+                // INST -> CICLO
+                INST_c[++topeINST_c] = CICLO_c[topeCICLO_c--];
             }
             case 16 -> {
+                // COND -> cierto ( EXP ) haz BLQ falso BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
+                //COND_c[++topeCOND_c] = EXP_c + PosA + BLQ_c[topeBLQ_c--] + ;
             }
             case 17 -> {
                 PosA = GenEtq();
