@@ -37,7 +37,8 @@ public class azulSLR1 {
     static int xTabla = 0;
 
     // para las reglas semanticas de los reduce
-    static String PROG_c;
+    static String [] PROG_c = new String[117];
+    static int topePROG_C=-1;
     static String [] PRIN_c = new String[117];
     static int topePrin_c = -1;
     static String [] BLQ_c = new String[117];
@@ -63,7 +64,7 @@ public class azulSLR1 {
     static String [] OP_c = new String[117];
     static int topeOP_c = -1;
 
-    static String aux;
+    static String aux, aux2;
 
     public static void lee_token(File xFile) {
         try {
@@ -216,6 +217,13 @@ public class azulSLR1 {
         }
         return vars;
     }
+    //Rutina imprimir tabla de simbolos
+	public static void printTabla(){
+		System.out.println("\tVariable\tTipo");
+		for(int i=0;i<xTabla;i++)
+		 System.out.println("\t"+tablaSimbolos[i][0] + "\t\t"+tablaSimbolos[i][1]);
+		pausa();
+	}
 
     public static void main(String[] args) {
         Entrada = args[0] + ".sal";
@@ -444,8 +452,10 @@ public class azulSLR1 {
              */
 
             if (m == 1117) {
+                printTabla();
                 System.out.println("-> Parser SLR terminado con exito   :)");
-                System.out.println("---Codigo generado:---\n" +PROG_c);
+                System.out.println("---Codigo generado:---\n" +PROG_c[topePROG_C]) ;
+                pausa();
                 exit(0);
             } else {
                 if (m > 0) {
@@ -503,11 +513,12 @@ public class azulSLR1 {
     public static void cod_reduce(int R) {
         //R = -R;
         switch (R) {
-            case 1 -> {
+            case 1 -> { //CHECKIT
                 // PROG ->  DATASEC PRIN
-                PROG_c = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c] + "\tVUEL\tO\n\tFIN";
+                PROG_c[++topePROG_C] = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c--] + "\n\tVUEL\tO\n\tFIN\n";
+            	//PROG_c = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c] + "\tVUEL\tO\n\tFIN";
             }
-            case 8 -> {
+			case 8 -> {
                 // PRIN ->  { BLQ }
                 PRIN_c[++topePrin_c] = BLQ_c[topeBLQ_c--];
             }
@@ -532,63 +543,101 @@ public class azulSLR1 {
                 // INST -> CICLO
                 INST_c[++topeINST_c] = CICLO_c[topeCICLO_c--];
             }
-            case 16 -> {
+            case 16 -> { //CHECKIT
                 // COND -> cierto ( EXP ) haz BLQ falso BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
-                //COND_c[++topeCOND_c] = EXP_c + PosA + BLQ_c[topeBLQ_c--] + "SAL" + PosB;
+				aux = EXP_c[topeEXP_c--]+PosA+BLQ_c[topeBLQ_c--]+"\n\tSAL\t"+PosB;
+				aux = aux+"\n("+PosA+")\tMUE\tRC,RC"+BLQ_c[topeBLQ_c--];
+                COND_c[++topeCOND_c] = aux+"\n("+PosB+")\tMUE\tRC,RC";
             }
             case 17 -> {
                 // COND -> cierto ( EXP ) haz BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
+				aux = EXP_c[topeEXP_c--]+PosA+"\n\tSAL\t"+PosB;
+				aux = aux+"\n("+PosA+")\tMUE\tRC,RC"+BLQ_c[topeBLQ_c--];
+                COND_c[++topeCOND_c] = aux+"\n("+PosB+")\tMUE\tRC,RC";
             }
             case 18 -> {
                 // CICLO -> mientras ( EXP ) BLQ fin_mientras
                 PosA = GenEtq();
                 PosB = GenEtq();
                 PosC = GenEtq();
+				aux = "\n("+PosA+")\tMUE\tRC,RC"+EXP_c[topeEXP_c--]+PosB+"n\tSAL\t"+PosC;
+				aux = aux+"\n("+PosB+")\tMUE\tRC,RC"+BLQ_c[topeBLQ_c--]+"\n\tSAL\t"+PosA;
+                CICLO_c[++topeCICLO_c] = aux+"\n("+PosC+")\tMUE\tRC,RC";
 
             }
             case 19 -> {
                 // ASIG -> id asig E
                 ChkTipo(TipoEsp, E_t[topeE_t--]);
-                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\tMUE\t" + E_v[topeE_v--] + ", " + VarIzq + "\n";
+                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\n\tMUE\t" + E_v[topeE_v--] + "," + VarIzq + "\n";
             }
             case 20 -> {
                 // EXP  ->  E OP E
-                aux = E_t[topeE_t--];
-                ChkTipo(E_t[topeE_t--], aux);
+                aux2 = E_t[topeE_t--];
+				aux = E_t[topeE_t--];
+                ChkTipo(aux,aux2);
                 // se obtiene E_v 2
-                aux = E_v[topeE_v--] + ", RB " + instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
+				Tipo=aux;
+				aux2 = E_c[topeE_c--];
+				aux = E_c[topeE_c--];
+				Temp=aux+aux2;
+				aux2 = E_v[topeE_v--];
+				aux = E_v[topeE_v--];
+				EXP_c[++topeEXP_c]=Temp+"\n\tMUE\t"+aux+", RA\n\tMUE\t" + aux2+", RB " + "\n\t"+instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
+				
+                //aux = E_v[topeE_v--] + ", RB " + instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
                 // se obtiene E_v 1
-                aux = E_v[topeE_v--] + ", RA MUE" + aux;
+                //aux = E_v[topeE_v--] + ", RA MUE" + aux;
                 // se obtiene E2
-                aux = E_c[topeE_c--] + "MUE" + aux;
+                //aux = E_c[topeE_c--] + "MUE" + aux;
                 // se obtiene E1
-                aux = E_c[topeE_c--] + aux;
+                //aux = E_c[topeE_c--] + aux;
                 // el resultado se guarda en EXP_c
-                EXP_c[++topeEXP_c] = aux;
+                //EXP_c[++topeEXP_c] = aux;
             }
             case 21 -> {
                 // E -> E + F
-                aux = E_t[topeE_t--];
-                E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
-                X = GenVar();
-                aux = E_c[topeE_c--];
-                E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUM", E_t[topeE_t--]) +
-                        F_v[topeF_v--] + "MUE RA, " +X;
-                E_v[++topeE_v] = X;
+				aux=ChkTipo(E_t[topeE_t],F_t[topeF_t]);
+				E_t[++topeE_t]=aux;
+				X=GenVar();
+				aux=E_c[topeE_c--]+F_c[topeF_c--]+"\n\tMUE\t"+E_v[topeE_v--]+",RA";
+				aux=aux+"\n\t"+instAri("SUM",E_t[topeE_t--])+"\t"+F_v[topeF_v--];
+				aux=aux+"\n\tMUE\tRA,"+X;
+				E_c[++topeE_c]=aux;
+				E_v[++topeE_v]=X;
+				
+				
+				
+                //aux = E_t[topeE_t--];
+                //E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
+                //X = GenVar();
+                //aux = E_c[topeE_c--];
+                //E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUM", E_t[topeE_t--]) +
+                 //       F_v[topeF_v--] + "MUE RA, " +X;
+                //E_v[++topeE_v] = X;
             }
             case 22 -> {
                 // E -> E - F
-                aux = E_t[topeE_t--];
-                E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
-                X = GenVar();
-                aux = E_c[topeE_c--];
-                E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUB", E_t[topeE_t--]) +
-                        F_v[topeF_v--] + "MUE RA, " +X;
-                E_v[++topeE_t] = X;
+				aux=ChkTipo(E_t[topeE_t],F_t[topeF_t]);
+				E_t[++topeE_t]=aux;
+				X=GenVar();
+				aux=E_c[topeE_c--]+F_c[topeF_c--]+"\n\tMUE\t"+E_v[topeE_v--]+",RA";
+				aux=aux+"\n\t"+instAri("SUB",E_t[topeE_t--])+"\t"+F_v[topeF_v--];
+				aux=aux+"\n\tMUE\tRA,"+X;
+				E_c[++topeE_c]=aux;
+				E_v[++topeE_v]=X;
+				
+	
+				//aux = E_t[topeE_t--];
+                //E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
+                //X = GenVar();
+                //aux = E_c[topeE_c--];
+                //E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUB", E_t[topeE_t--]) +
+                // F_v[topeF_v--] + "MUE RA, " +X;
+                //E_v[++topeE_t] = X;
             }
             case 23 -> {
                 // E -> F
@@ -598,23 +647,42 @@ public class azulSLR1 {
             }
             case 24 -> {
                 // F -> F * S
-                aux = F_t[topeF_t--];
-                F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
-                X = GenVar();
-                aux = F_c[topeF_c--];
-                F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("MUL", F_t[topeF_t--]) +
-                        S_v[topeS_v--] + "MUE RA, " +X +"\n";
-                F_v[++topeF_v] = X;
+				aux=ChkTipo(F_t[topeF_t],S_t[topeS_t--]);
+				F_t[++topeF_t]=aux;
+				X=GenVar();
+				aux=F_c[topeF_c--]+S_c[topeS_c--]+"\n\tMUE\t"+F_v[topeF_v--]+",RA";
+				aux=aux+"\n\t"+instAri("MUL",F_t[topeF_t--])+"\t"+S_v[topeS_v--];
+				aux=aux+"\n\tMUE\tRA,"+X;
+				F_c[++topeF_c]=aux;
+				F_v[++topeF_v]=X;
+				
+                //aux = F_t[topeF_t--];
+                //F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
+                //X = GenVar();
+                //aux = F_c[topeF_c--];
+                //F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("MUL", F_t[topeF_t--]) +
+                //  S_v[topeS_v--] + "MUE RA, " +X +"\n";
+                //F_v[++topeF_v] = X;
             }
             case 25 -> {
                 // F -> F / S
-                aux = F_t[topeF_t--];
-                F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
-                X = GenVar();
-                aux = F_c[topeF_c--];
-                F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("DIV", F_t[topeF_t--]) +
-                        S_v[topeS_v--] + "MUE RA, " +X;
-                F_v[++topeF_v] = X;
+				aux=ChkTipo(F_t[topeF_t],S_t[topeS_t--]);
+				F_t[++topeF_t]=aux;
+				X=GenVar();
+				aux=F_c[topeF_c--]+S_c[topeS_c--]+"\n\tMUE\t"+F_v[topeF_v--]+",RA";
+				aux=aux+"\n\t"+instAri("DIV",F_t[topeF_t--])+"\t"+S_v[topeS_v--];
+				aux=aux+"\n\tMUE\tRA,"+X;
+				F_c[++topeF_c]=aux;
+				F_v[++topeF_v]=X;
+				
+				
+                //aux = F_t[topeF_t--];
+                //F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
+                //X = GenVar();
+                //aux = F_c[topeF_c--];
+                //F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("DIV", F_t[topeF_t--]) +
+                  //      S_v[topeS_v--] + "MUE RA, " +X;
+                //F_v[++topeF_v] = X;
             }
             case 26 -> {
                 // F -> S
@@ -638,7 +706,7 @@ public class azulSLR1 {
                 // S -> id
                 S_c[++topeS_c] = "";
                 S_v[++topeS_v] = Temp;
-                S_t[topeS_t] = Tipo;
+                S_t[++topeS_t] = Tipo;
             }
             case 30 -> {
                 // S -> ( E )
