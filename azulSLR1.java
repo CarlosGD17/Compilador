@@ -65,7 +65,7 @@ public class azulSLR1 {
     static int topeOP_c = -1;
 
     static String aux, aux2;
-
+    static String Ec1,Ec2,Et1,Et2,Ev1,Ev2;
     public static void lee_token(File xFile) {
         try {
             FileReader fr = new FileReader(xFile);
@@ -577,19 +577,23 @@ public class azulSLR1 {
                 ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\n\tMUE\t" + E_v[topeE_v--] + "," + VarIzq + "\n";
             }
             case 20 -> {
-                // EXP  ->  E OP E
-                aux2 = E_t[topeE_t--];
-                aux = E_t[topeE_t--];
-                ChkTipo(aux, aux2);
-                // se obtiene E_v 2
-                Tipo = aux;
-                aux2 = E_c[topeE_c--];
-                aux = E_c[topeE_c--];
-                Temp = aux + aux2;
-                aux2 = E_v[topeE_v--];
-                aux = E_v[topeE_v--];
-                EXP_c[++topeEXP_c] = Temp + "\n\tMUE\t" + aux + ", RA\n\tMUE\t" + aux2 + ", RB " + "\n\t" +
-                        instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
+                // EXP  ->  E1 OP E2
+				//E_t1
+				Et1 = E_t[topeE_t--];
+				//E_t2
+				Et2 = E_t[topeE_t--];
+				//ChkTipo(E.t,E.t);
+				ChkTipo(Et1, Et2);
+				//E_c1
+				Ec1=E_c[topeE_c--];
+				//E_c2
+				Ec2=E_c[topeE_c--];
+				//E_v1
+				Ev1 = E_v[topeE_v--];
+				//E_v2
+				Ev2 = E_v [topeE_v--];
+               //EXP.c = E1.c|E2.c|MUE E1.v,RA|MUE E2.v,RB|instAri(CMP,E1.t) RA,RB|OP.c
+                EXP_c[++topeEXP_c]= Ec1+Ec2 + "\n\tMUE\t"+Ev1+", RA\n\tMUE\t"+Ev2+",RB"+instAri("\n\tCMPE\t",Et1)+"RA ,RB\n\t"+OP_c[topeOP_c--];        
             }
             case 21 -> {
                 // E -> E + F
