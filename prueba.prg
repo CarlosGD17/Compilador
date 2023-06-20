@@ -7,7 +7,12 @@ datos
 fin_datos
 
 {
-    A <- 3.15 + 2.0 * perro/C
+    A <- (3.15 + 2.0)/perro
+    //A <- 3.15 + 2.0 * perro/C
+
+    //cierto (2>1) haz
+      //  A <- 4.6
+    //fin_cond
 
     //A <- 5.0-A
     //hola <- 117
