@@ -711,6 +711,8 @@ public class azulSLR1 {
             case 30 -> {
                 // S -> ( E )
                 S_c[++topeS_c] = E_c[topeE_c--];
+                S_v[++topeS_v] = E_v[topeE_v--];
+                S_t[++topeS_t] = E_t[topeE_t--];
             }
             case 31 -> {
                 // OP -> may
