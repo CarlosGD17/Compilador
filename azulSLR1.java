@@ -438,7 +438,7 @@ public class azulSLR1 {
 
             if (m == 1117) {
                 System.out.println("-> Parser SLR terminado con exito   :)");
-                System.out.println("\tCodigo genereado: \n" +PROG_c);
+                System.out.println("\tCodigo generado: \n" +PROG_c);
                 exit(0);
             } else {
                 if (m > 0) {
