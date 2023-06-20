@@ -588,17 +588,8 @@ public class azulSLR1 {
                 Temp = aux + aux2;
                 aux2 = E_v[topeE_v--];
                 aux = E_v[topeE_v--];
-                EXP_c[++topeEXP_c] = Temp + "\n\tMUE\t" + aux + ", RA\n\tMUE\t" + aux2 + ", RB " + "\n\t" + instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
-
-                //aux = E_v[topeE_v--] + ", RB " + instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
-                // se obtiene E_v 1
-                //aux = E_v[topeE_v--] + ", RA MUE" + aux;
-                // se obtiene E2
-                //aux = E_c[topeE_c--] + "MUE" + aux;
-                // se obtiene E1
-                //aux = E_c[topeE_c--] + aux;
-                // el resultado se guarda en EXP_c
-                //EXP_c[++topeEXP_c] = aux;
+                EXP_c[++topeEXP_c] = Temp + "\n\tMUE\t" + aux + ", RA\n\tMUE\t" + aux2 + ", RB " + "\n\t" +
+                        instAri("CMP", E_t[topeE_t--]) + "RA, RB " + OP_c[topeOP_c--];
             }
             case 21 -> {
                 // E -> E + F
@@ -610,15 +601,6 @@ public class azulSLR1 {
                 aux = aux + "\n\tMUE\tRA," + X;
                 E_c[++topeE_c] = aux;
                 E_v[++topeE_v] = X;
-
-
-                //aux = E_t[topeE_t--];
-                //E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
-                //X = GenVar();
-                //aux = E_c[topeE_c--];
-                //E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUM", E_t[topeE_t--]) +
-                //       F_v[topeF_v--] + "MUE RA, " +X;
-                //E_v[++topeE_v] = X;
             }
             case 22 -> {
                 // E -> E - F
@@ -630,15 +612,6 @@ public class azulSLR1 {
                 aux = aux + "\n\tMUE\tRA," + X;
                 E_c[++topeE_c] = aux;
                 E_v[++topeE_v] = X;
-
-
-                //aux = E_t[topeE_t--];
-                //E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
-                //X = GenVar();
-                //aux = E_c[topeE_c--];
-                //E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUB", E_t[topeE_t--]) +
-                // F_v[topeF_v--] + "MUE RA, " +X;
-                //E_v[++topeE_t] = X;
             }
             case 23 -> {
                 // E -> F
