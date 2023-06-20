@@ -717,27 +717,27 @@ public class azulSLR1 {
             }
             case 31 -> {
                 // OP -> may
-                OP_c[++topeOP_c] = "SMAY";
+                OP_c[++topeOP_c] = "\n\tSMAY\t";
             }
             case 32 -> {
                 // OP -> men
-                OP_c[++topeOP_c] = "SMEN";
+                OP_c[++topeOP_c] = "\n\tSMEN\t";
             }
             case 33 -> {
                 // OP -> mayi
-                OP_c[++topeOP_c] = "SMAI";
+                OP_c[++topeOP_c] = "\n\tSMAI\t";
             }
             case 34 -> {
                 // OP -> meni
-                OP_c[++topeOP_c] = "SMEI";
+                OP_c[++topeOP_c] = "\n\tSMEI\t";
             }
             case 35 -> {
                 // OP -> igual
-                OP_c[++topeOP_c] = "SIG";
+                OP_c[++topeOP_c] = "\n\tSIG\t";
             }
             case 36 -> {
                 // OP -> dif
-                OP_c[++topeOP_c] = "SDIF";
+                OP_c[++topeOP_c] = "\n\tSDIF\t";
             }
         }
     }
