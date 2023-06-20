@@ -209,6 +209,14 @@ public class azulSLR1 {
         return "E" + etq;
     }
 
+    public static String VarTemps(){
+        String vars = "";
+        for(int i = 0; i < var; i++){
+            vars += "\n\tPALABRA\tV" +i +"\n";
+        }
+        return vars;
+    }
+
     public static void main(String[] args) {
         Entrada = args[0] + ".sal";
         if (!xArchivo(Entrada).exists()) {
@@ -497,7 +505,7 @@ public class azulSLR1 {
         switch (R) {
             case 1 -> {
                 // PROG ->  DATASEC PRIN
-                PROG_c = DecV + "\n" + PRIN_c[topePrin_c] + "\tVUEL\tO\n\tFIN";
+                PROG_c = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c] + "\tVUEL\tO\n\tFIN";
             }
             case 8 -> {
                 // PRIN ->  { BLQ }
