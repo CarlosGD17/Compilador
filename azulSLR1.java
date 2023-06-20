@@ -223,7 +223,7 @@ public class azulSLR1 {
         System.out.println("\tVariable\tTipo");
         for (int i = 0; i < xTabla; i++)
             System.out.println("\t" + tablaSimbolos[i][0] + "\t\t" + tablaSimbolos[i][1]);
-        //pausa();
+        pausa();
     }
 
     public static void main(String[] args) {
@@ -233,55 +233,55 @@ public class azulSLR1 {
             exit(4);
         }
 
-        // terminales
-        terminales[0] = "datos";        terminales[16] = "fin_mientras";
-        terminales[1] = "fin_datos";    terminales[17] = "asig";
-        terminales[2] = ":";            terminales[18] = "+";
-        terminales[3] = "id";           terminales[19] = "-";
-        terminales[4] = ",";            terminales[20] = "*";
-        terminales[5] = "{";            terminales[21] = "/";
-        terminales[6] = "}";            terminales[22] = "ent";
-        terminales[7] = "entero";       terminales[23] = "dec";
-        terminales[8] = "decimal";      terminales[24] = "may";
-        terminales[9] = "cierto";       terminales[25] = "men";
-        terminales[10] = "(";           terminales[26] = "mayi";
-        terminales[11] = ")";           terminales[27] = "meni";
-        terminales[12] = "haz";         terminales[28] = "igual";
-        terminales[13] = "falso";       terminales[29] = "dif";
-        terminales[14] = "fin_cond";    terminales[30] = "fin";
-        terminales[15] = "mientras";
+// terminales
+        terminales[0]="datos";          terminales[16]="fin_mientras";
+        terminales[1]="fin_datos";      terminales[17]="asig";
+        terminales[2]=":";              terminales[18]="+";
+        terminales[3]="id";             terminales[19]="-";
+        terminales[4]=",";              terminales[20]="*";
+        terminales[5]="{";              terminales[21]="/";
+        terminales[6]="}";              terminales[22]="ent";
+        terminales[7]="entero";         terminales[23]="dec";
+        terminales[8]="decimal";        terminales[24]="may";
+        terminales[9]="cierto";         terminales[25]="men";
+        terminales[10]="(";             terminales[26]="mayi";
+        terminales[11]=")";             terminales[27]="meni";
+        terminales[12]="haz";           terminales[28]="igual";
+        terminales[13]="falso";         terminales[29]="dif";
+        terminales[14]="fin_cond";      terminales[30]="fin";
+        terminales[15]="mientras";
 
         // no terminales
-        noTerminales[0] = "PROGP";      noTerminales[9] = "COND";
-        noTerminales[1] = "PROG";       noTerminales[10] = "CICLO";
-        noTerminales[2] = "DATSEC";     noTerminales[11] = "ASIG";
-        noTerminales[3] = "VARS";       noTerminales[12] = "EXP";
-        noTerminales[4] = "LISTA";      noTerminales[13] = "E";
-        noTerminales[5] = "PRIN";       noTerminales[14] = "F";
-        noTerminales[6] = "TIPO";       noTerminales[15] = "S";
-        noTerminales[7] = "BLQ";        noTerminales[16] = "OP";
-        noTerminales[8] = "INST";
+        noTerminales[0]="PROGP";        noTerminales[9]="COND";
+        noTerminales[1]="PROG";         noTerminales[10]="CICLO";
+        noTerminales[2]="DATSEC";       noTerminales[11]="ASIG";
+        noTerminales[3]="VARS";         noTerminales[12]="EXP";
+        noTerminales[4]="LISTA";        noTerminales[13]="E";
+        noTerminales[5]="PRIN";         noTerminales[14]="F";
+        noTerminales[6]="TIPO";         noTerminales[15]="S";
+        noTerminales[7]="BLQ";          noTerminales[16]="OP";
+        noTerminales[8]="INST";
 
         // parte izquierda de la produccion
-        parteIzquierda[0] = "PROGP";    parteIzquierda[19] = "ASIG";
-        parteIzquierda[1] = "PROG";     parteIzquierda[20] = "EXP";
-        parteIzquierda[2] = "DATSEC";   parteIzquierda[21] = "E";
-        parteIzquierda[3] = "DATSEC";   parteIzquierda[22] = "E";
-        parteIzquierda[4] = "VARS";     parteIzquierda[23] = "E";
-        parteIzquierda[5] = "VARS";     parteIzquierda[24] = "F";
-        parteIzquierda[6] = "LISTA";    parteIzquierda[25] = "F";
-        parteIzquierda[7] = "LISTA";    parteIzquierda[26] = "F";
-        parteIzquierda[8] = "PRIN";     parteIzquierda[27] = "S";
-        parteIzquierda[9] = "TIPO";     parteIzquierda[28] = "S";
-        parteIzquierda[10] = "TIPO";    parteIzquierda[29] = "S";
-        parteIzquierda[11] = "BLQ";     parteIzquierda[30] = "S";
-        parteIzquierda[12] = "BLQ";     parteIzquierda[31] = "OP";
-        parteIzquierda[13] = "INST";    parteIzquierda[32] = "OP";
-        parteIzquierda[14] = "INST";    parteIzquierda[33] = "OP";
-        parteIzquierda[15] = "INST";    parteIzquierda[34] = "OP";
-        parteIzquierda[16] = "COND";    parteIzquierda[35] = "OP";
-        parteIzquierda[17] = "COND";    parteIzquierda[36] = "OP";
-        parteIzquierda[18] = "CICLO";
+        parteIzquierda[0]="PROGP";      parteIzquierda[19]="ASIG";
+        parteIzquierda[1]="PROG";       parteIzquierda[20]="EXP";
+        parteIzquierda[2]="DATSEC";     parteIzquierda[21]="E";
+        parteIzquierda[3]="DATSEC";     parteIzquierda[22]="E";
+        parteIzquierda[4]="VARS";       parteIzquierda[23]="E";
+        parteIzquierda[5]="VARS";       parteIzquierda[24]="F";
+        parteIzquierda[6]="LISTA";      parteIzquierda[25]="F";
+        parteIzquierda[7]="LISTA";      parteIzquierda[26]="F";
+        parteIzquierda[8]="PRIN";       parteIzquierda[27]="S";
+        parteIzquierda[9]="TIPO";       parteIzquierda[28]="S";
+        parteIzquierda[10]="TIPO";      parteIzquierda[29]="S";
+        parteIzquierda[11]="BLQ";       parteIzquierda[30]="S";
+        parteIzquierda[12]="BLQ";       parteIzquierda[31]="OP";
+        parteIzquierda[13]="INST";      parteIzquierda[32]="OP";
+        parteIzquierda[14]="INST";      parteIzquierda[33]="OP";
+        parteIzquierda[15]="INST";      parteIzquierda[34]="OP";
+        parteIzquierda[16]="COND";      parteIzquierda[35]="OP";
+        parteIzquierda[17]="COND";      parteIzquierda[36]="OP";
+        parteIzquierda[18]="CICLO";
 
         // tamano parte derecha de la produccion
         tamanoParteDerecha[0]=1;        tamanoParteDerecha[19]=3;
@@ -433,6 +433,7 @@ public class azulSLR1 {
         M[63][9]=-18;   M[63][3]=-18;   M[63][15]=-18;  M[63][6]=-18;   M[63][13]=-18;  M[63][14]=-18;  M[63][16]=-18;
         M[65][9]=-17;   M[65][3]=-17;   M[65][15]=-17;  M[65][6]=-17;   M[65][13]=-17;  M[65][14]=-17;  M[65][16]=-17;
         M[67][9]=-16;   M[67][3]=-16;   M[67][15]=-16;  M[67][6]=-16;   M[67][13]=-16;  M[67][14]=-16;  M[67][16]=-16;
+
 
         // inicia el parser
         push("0");
