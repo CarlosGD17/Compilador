@@ -569,7 +569,6 @@ public class azulSLR1 {
                 aux = "\n(" + PosA + ")\tMUE\tRC, RC" + EXP_c[topeEXP_c--] + PosB + "\n\tSAL\t" + PosC;
                 aux = aux + "\n(" + PosB + ")\tMUE\tRC, RC" + BLQ_c[topeBLQ_c--] + "\n\tSAL\t" + PosA;
                 CICLO_c[++topeCICLO_c] = aux + "\n(" + PosC + ")\tMUE\tRC, RC";
-
             }
             case 19 -> {
                 // ASIG -> id asig E
@@ -633,14 +632,6 @@ public class azulSLR1 {
                 aux = aux + "\n\tMUE\tRA," + X;
                 F_c[++topeF_c] = aux;
                 F_v[++topeF_v] = X;
-
-                //aux = F_t[topeF_t--];
-                //F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
-                //X = GenVar();
-                //aux = F_c[topeF_c--];
-                //F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("MUL", F_t[topeF_t--]) +
-                //  S_v[topeS_v--] + "MUE RA, " +X +"\n";
-                //F_v[++topeF_v] = X;
             }
             case 25 -> {
                 // F -> F / S
@@ -652,15 +643,6 @@ public class azulSLR1 {
                 aux = aux + "\n\tMUE\tRA," + X;
                 F_c[++topeF_c] = aux;
                 F_v[++topeF_v] = X;
-
-
-                //aux = F_t[topeF_t--];
-                //F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
-                //X = GenVar();
-                //aux = F_c[topeF_c--];
-                //F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("DIV", F_t[topeF_t--]) +
-                //      S_v[topeS_v--] + "MUE RA, " +X;
-                //F_v[++topeF_v] = X;
             }
             case 26 -> {
                 // F -> S

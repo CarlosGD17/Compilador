@@ -7,14 +7,12 @@ datos
 fin_datos
 
 {
-    A <- (3.15 + 2.0)/perro
-    //A <- 3.15 + 2.0 * perro/C
-
-    //cierto (2>1) haz
-      //  A <- 4.6
-    //fin_cond
-
-    //A <- 5.0-A
-    //hola <- 117
-    //adios <- 1.17
+    mientras (3.15 + 2.0 * perro / C > 4.0)
+        C <- 7.5
+        cierto(45>B) haz
+            A <- 7.0
+        fin_cond
+        B <- 15 + B
+    fin_mientras
+    B <- 5
 }
