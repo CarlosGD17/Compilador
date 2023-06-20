@@ -1,9 +1,15 @@
+
+// Programa de prueba 2023A
+
 datos
-    entero: hola, int
-    decimal: adios, float
+    decimal:A,C,hola,perro
+    entero: B
 fin_datos
 
 {
-    hola <- 117
-    adios <- 1.17
+    A <- 3.15 + 2.0 * perro/C
+
+    //A <- 5.0-A
+    //hola <- 117
+    //adios <- 1.17
 }
