@@ -199,9 +199,9 @@ public class azulSLR1 {
 
     public static String instAri(String A, String B) { //REVISADO
         if (B.equals("decimal")) {
-            return A + "F";
+            return A; // + "F";
         } else {
-            return A + "E";
+            return A ;//+ "E";
         }
     }
 
@@ -579,21 +579,21 @@ public class azulSLR1 {
             case 20 -> {
                 // EXP  ->  E1 OP E2
 				//E_t1
-				Et1 = E_t[topeE_t--];
-				//E_t2
 				Et2 = E_t[topeE_t--];
+				//E_t2
+				Et1 = E_t[topeE_t--];
 				//ChkTipo(E.t,E.t);
 				ChkTipo(Et1, Et2);
 				//E_c1
-				Ec1=E_c[topeE_c--];
-				//E_c2
 				Ec2=E_c[topeE_c--];
+				//E_c2
+				Ec1=E_c[topeE_c--];
 				//E_v1
-				Ev1 = E_v[topeE_v--];
+				Ev2 = E_v[topeE_v--];
 				//E_v2
-				Ev2 = E_v [topeE_v--];
+				Ev1 = E_v [topeE_v--];
                //EXP.c = E1.c|E2.c|MUE E1.v,RA|MUE E2.v,RB|instAri(CMP,E1.t) RA,RB|OP.c
-                EXP_c[++topeEXP_c]= Ec1+Ec2 + "\n\tMUE\t"+Ev1+", RA\n\tMUE\t"+Ev2+",RB"+instAri("\n\tCMPE\t",Et1)+"RA ,RB\n\t"+OP_c[topeOP_c--];        
+                EXP_c[++topeEXP_c]= Ec1+Ec2 + "\n\tMUE\t"+Ev1+", RA\n\tMUE\t"+Ev2+",RB"+instAri("\n\tCMPE\t",Et1)+"RA, RB\n\t"+OP_c[topeOP_c--];
             }
             case 21 -> {
                 // E -> E + F
