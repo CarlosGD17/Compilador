@@ -212,8 +212,8 @@ public class azulSLR1 {
 
     public static String VarTemps() {
         String vars = "";
-        for (int i = 0; i < var; i++) {
-            vars += "\n\tPALABRA\tV" + i + "\n";
+        for (int i = 0; i <= var; i++) {
+            vars += "\tPALABRA\tV" + i + "\n";
         }
         return vars;
     }
@@ -221,7 +221,7 @@ public class azulSLR1 {
     //Rutina imprimir tabla de simbolos
     public static void printTabla() {
         System.out.println("\tVariable\tTipo");
-        for (int i = 0; i < xTabla; i++)
+        for (int i = 0; i <= xTabla; i++)
             System.out.println("\t" + tablaSimbolos[i][0] + "\t\t" + tablaSimbolos[i][1]);
         pausa();
     }
@@ -454,10 +454,10 @@ public class azulSLR1 {
              */
 
             if (m == 1117) {
-                printTabla();
+                //printTabla();
                 System.out.println("-> Parser SLR terminado con exito   :)");
                 System.out.println("---Codigo generado:---\n" + PROG_c[topePROG_C]);
-                pausa();
+                //pausa();
                 exit(0);
             } else {
                 if (m > 0) {
