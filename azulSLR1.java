@@ -1,8 +1,6 @@
 import java.io.*;
-import java.util.Objects;
 
 import static java.lang.System.exit;
-import static java.lang.System.in;
 
 public class azulSLR1 {
 
@@ -35,7 +33,7 @@ public class azulSLR1 {
 
     // tabla de Simbolos, guarda variables generadas
     static String[][] tablaSimbolos = new String[117][2];
-    static int xTabla = 0, topeTabla = 0;
+    static int xTabla = 0;
 
     // para las reglas semanticas de los reduce
     static String PROG_c;
@@ -70,7 +68,7 @@ public class azulSLR1 {
         try {
             FileReader fr = new FileReader(xFile);
             BufferedReader br = new BufferedReader(fr);
-            long NoSirve = br.skip(Posicion);
+            br.skip(Posicion);
             String linea = br.readLine();
             Posicion = Posicion + linea.length() + 2;
             a = linea;
