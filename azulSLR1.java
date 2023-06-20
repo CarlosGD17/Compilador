@@ -550,8 +550,8 @@ public class azulSLR1 {
                 PosA = GenEtq();
                 PosB = GenEtq();
                 aux = EXP_c[topeEXP_c--] + PosA + BLQ_c[topeBLQ_c--] + "\n\tSAL\t" + PosB;
-                aux = aux + "\n(" + PosA + ")\tMUE\tRC,RC" + BLQ_c[topeBLQ_c--];
-                COND_c[++topeCOND_c] = aux + "\n(" + PosB + ")\tMUE\tRC,RC";
+                aux = aux + "\n(" + PosA + ")\tMUE\tRC, RC" + BLQ_c[topeBLQ_c--];
+                COND_c[++topeCOND_c] = aux + "\n(" + PosB + ")\tMUE\tRC, RC";
             }
             case 17 -> {
                 // COND -> cierto ( EXP ) haz BLQ fin_cond
@@ -566,9 +566,9 @@ public class azulSLR1 {
                 PosA = GenEtq();
                 PosB = GenEtq();
                 PosC = GenEtq();
-                aux = "\n(" + PosA + ")\tMUE\tRC,RC" + EXP_c[topeEXP_c--] + PosB + "n\tSAL\t" + PosC;
-                aux = aux + "\n(" + PosB + ")\tMUE\tRC,RC" + BLQ_c[topeBLQ_c--] + "\n\tSAL\t" + PosA;
-                CICLO_c[++topeCICLO_c] = aux + "\n(" + PosC + ")\tMUE\tRC,RC";
+                aux = "\n(" + PosA + ")\tMUE\tRC, RC" + EXP_c[topeEXP_c--] + PosB + "\n\tSAL\t" + PosC;
+                aux = aux + "\n(" + PosB + ")\tMUE\tRC, RC" + BLQ_c[topeBLQ_c--] + "\n\tSAL\t" + PosA;
+                CICLO_c[++topeCICLO_c] = aux + "\n(" + PosC + ")\tMUE\tRC, RC";
 
             }
             case 19 -> {
