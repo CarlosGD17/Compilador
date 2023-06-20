@@ -35,7 +35,7 @@ public class azulSLR1 {
 
     // tabla de Simbolos, guarda variables generadas
     static String[][] tablaSimbolos = new String[117][2];
-    static int xTabla = 0;
+    static int xTabla = 0, topeTabla = 0;
 
     // para las reglas semanticas de los reduce
     static String PROG_c;
@@ -158,7 +158,7 @@ public class azulSLR1 {
 
     public static String ChkTipo(String A, String B) { //REVISADO
         if(A.equals(B)){
-            return obtenTipo(A);
+            return A;
             //return "Tipo de A y B si son iguales";
         }
         System.exit(4);
@@ -178,7 +178,7 @@ public class azulSLR1 {
     //Verificar si existe la variable en la tablaSimbolos
     public static int existeVariable(String variable){
         // retorn a el indice de variable si esta en la tabla
-        for (int i = 0; i < tablaSimbolos.length; i++) {
+        for (int i = 0; i < xTabla; i++) {
             if (tablaSimbolos[i][0].equals(variable)) {
                 return i;
             }
@@ -190,7 +190,7 @@ public class azulSLR1 {
     public static String obtenTipo(String X){ //Verifica si existe en la tabla
         int indice = existeVariable(X);
         if(indice != -1){
-            System.out.println("La variable"+X+"existe y es de tipo:");
+            // System.out.println("La variable ["+X+"] existe y es de tipo: " +tablaSimbolos[indice][1]);
             return tablaSimbolos[indice][1];
         }
         System.exit(4);
@@ -445,12 +445,12 @@ public class azulSLR1 {
                     push(a);
                     push(String.valueOf(m));
 
-                    //cod_shift(m);
+                    cod_shift(m);
 
                     lee_token(xArchivo(Entrada));
                 } else if (m < 0) {
 
-                    //cod_reduce(-m);
+                    cod_reduce(-m);
 
                     for (int i = 0; i < tamanoParteDerecha[m * -1] * 2; i++) {
                         pop();
@@ -480,7 +480,7 @@ public class azulSLR1 {
             }
             case 26 -> {
                 Agr_tab(LEX, TipoDec);
-                //DecV = DecV;
+                // DecV = DecV + ;
                 //PALABRA LEX;
             }
             case 31, 32 -> {
@@ -499,6 +499,7 @@ public class azulSLR1 {
             case 1 -> {
                 // PROG ->  DATASEC PRIN
                 // PROG_c = DecV + PRIN_c + "VUEL O FIN";
+                PROG_c = PRIN_c[topePrin_c];
             }
             case 8 -> {
                 // PRIN ->  { BLQ }
@@ -546,7 +547,7 @@ public class azulSLR1 {
             case 19 -> {
                 // ASIG -> id asig E
                 ChkTipo(TipoEsp, E_t[topeE_t--]);
-                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + " MUE " + E_v[topeE_v--] + ", " + VarIzq;
+                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + " MUE " + E_v[topeE_v--] + ", " + VarIzq + "\n";
             }
             case 20 -> {
                 // EXP  ->  E OP E
@@ -568,75 +569,97 @@ public class azulSLR1 {
                 aux = E_t[topeE_t--];
                 E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
                 X = GenVar();
-
+                aux = E_c[topeE_c--];
+                E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUM", E_t[topeE_t--]) +
+                        F_v[topeF_v--] + "MUE RA, " +X;
                 E_v[++topeE_v] = X;
             }
             case 22 -> {
+                // E -> E - F
                 aux = E_t[topeE_t--];
                 E_t[++topeE_t] = ChkTipo(aux, F_t[topeF_t--]);
                 X = GenVar();
-                // E_c = E_c + F_c + "MUE" + E_v + ", RA"...
+                aux = E_c[topeE_c--];
+                E_c[++topeE_c] = aux + F_c[topeF_c--] + "MUE" + E_v[topeE_v--] +", RA " + instAri("SUB", E_t[topeE_t--]) +
+                        F_v[topeF_v--] + "MUE RA, " +X;
                 E_v[++topeE_t] = X;
             }
             case 23 -> {
-                // E_c = F_c;
-                E_v = F_v;
-                E_t = F_t;
+                // E -> F
+                E_c[++topeE_c] = F_c[topeF_c--];
+                E_v[++topeE_v] = F_v[topeF_v--];
+                E_t[++topeE_t] = F_t[topeF_t--];
             }
             case 24 -> {
-                aux = F_t[topeF_t--];
-                F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
-                X = GenVar();
-                // F_c = F_c + S_c + "MUE" + F_v;
-                F_v[++topeF_v] = X;
-            }
-            case 25 -> {
+                // F -> F * S
                 aux = F_t[topeF_t--];
                 F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
                 X = GenVar();
                 aux = F_c[topeF_c--];
-                F_c[++topeF_c] =  aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--];
+                F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("MUL", F_t[topeF_t--]) +
+                        S_v[topeS_v--] + "MUE RA, " +X;
+                F_v[++topeF_v] = X;
+            }
+            case 25 -> {
+                // F -> F / S
+                aux = F_t[topeF_t--];
+                F_t[++topeF_t] = ChkTipo(aux, S_t[topeS_t--]);
+                X = GenVar();
+                aux = F_c[topeF_c--];
+                F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("DIV", F_t[topeF_t--]) +
+                        S_v[topeS_v--] + "MUE RA, " +X;
                 F_v[++topeF_v] = X;
             }
             case 26 -> {
-                F_c = S_c;
-                F_v = S_v;
-                F_t = S_t;
+                // F -> S
+                F_c[++topeF_c] = S_c[topeS_c--];
+                F_v[++topeF_v] = S_v[topeS_v--];
+                F_t[++topeF_t] = S_t[topeS_t--];
             }
             case 27 -> {
-                S_c[topeS_c] = "";
+                // S -> ent
+                S_c[++topeS_c] = "";
                 S_v[++topeS_v] = Temp + 'e';
                 S_t[++topeS_t] = "entero";
             }
             case 28 -> {
+                // S -> dec
                 S_c[++topeS_c] = "";
                 S_v[++topeS_v] = Temp + 'f';
                 S_t[++topeS_t] = "decimal";
             }
             case 29 -> {
+                // S -> id
                 S_c[++topeS_c] = "";
                 S_v[++topeS_v] = Temp;
                 S_t[topeS_t] = Tipo;
             }
             case 30 -> {
+                // S -> ( E )
                 S_c[++topeS_c] = E_c[topeE_c--];
             }
             case 31 -> {
+                // OP -> may
                 OP_c[++topeOP_c] = "SMAY";
             }
             case 32 -> {
+                // OP -> men
                 OP_c[++topeOP_c] = "SMEN";
             }
             case 33 -> {
+                // OP -> mayi
                 OP_c[++topeOP_c] = "SMAI";
             }
             case 34 -> {
+                // OP -> meni
                 OP_c[++topeOP_c] = "SMEI";
             }
             case 35 -> {
+                // OP -> igual
                 OP_c[++topeOP_c] = "SIG";
             }
             case 36 -> {
+                // OP -> dif
                 OP_c[++topeOP_c] = "SDIF";
             }
         }
