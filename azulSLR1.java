@@ -595,7 +595,7 @@ public class azulSLR1 {
                 X = GenVar();
                 aux = F_c[topeF_c--];
                 F_c[++topeF_c] = aux + S_c[topeS_c--] + "MUE" + F_v[topeF_v--] +", RA " + instAri("MUL", F_t[topeF_t--]) +
-                        S_v[topeS_v--] + "MUE RA, " +X;
+                        S_v[topeS_v--] + "MUE RA, " +X +"\n";
                 F_v[++topeF_v] = X;
             }
             case 25 -> {
