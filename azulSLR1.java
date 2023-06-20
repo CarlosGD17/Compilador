@@ -26,6 +26,7 @@ public class azulSLR1 {
     static String TipoDec;
     static String VarIzq;
     static String TipoEsp;
+    static String DecV = "";
 
     // para la generacion de variables y etiquetas
     static int var = -1;
@@ -436,7 +437,7 @@ public class azulSLR1 {
 
             if (m == 1117) {
                 System.out.println("-> Parser SLR terminado con exito   :)");
-                System.out.println("\tCodigo generado: \n" +PROG_c);
+                System.out.println("---Codigo generado:---\n" +PROG_c);
                 exit(0);
             } else {
                 if (m > 0) {
@@ -478,7 +479,7 @@ public class azulSLR1 {
             }
             case 26 -> {
                 Agr_tab(LEX, TipoDec);
-                // DecV = DecV + ;
+                DecV = DecV + "\tPALABRA\t" +LEX +"\n";
                 //PALABRA LEX;
             }
             case 31, 32 -> {
@@ -496,8 +497,7 @@ public class azulSLR1 {
         switch (R) {
             case 1 -> {
                 // PROG ->  DATASEC PRIN
-                // PROG_c = DecV + PRIN_c + "VUEL O FIN";
-                PROG_c = PRIN_c[topePrin_c];
+                PROG_c = DecV + "\n" + PRIN_c[topePrin_c] + "\tVUEL\tO\n\tFIN";
             }
             case 8 -> {
                 // PRIN ->  { BLQ }
@@ -545,7 +545,7 @@ public class azulSLR1 {
             case 19 -> {
                 // ASIG -> id asig E
                 ChkTipo(TipoEsp, E_t[topeE_t--]);
-                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + " MUE " + E_v[topeE_v--] + ", " + VarIzq + "\n";
+                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\tMUE\t" + E_v[topeE_v--] + ", " + VarIzq + "\n";
             }
             case 20 -> {
                 // EXP  ->  E OP E
