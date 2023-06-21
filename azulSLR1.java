@@ -1,5 +1,4 @@
 import java.io.*;
-
 import static java.lang.System.exit;
 
 public class azulSLR1 {
@@ -64,7 +63,7 @@ public class azulSLR1 {
     static String[] OP_c = new String[117];
     static int topeOP_c = -1;
 
-    static String aux, aux2;
+    static String aux;
     static String Ec1,Ec2,Et1,Et2,Ev1,Ev2;
     public static void lee_token(File xFile) {
         try {
@@ -517,7 +516,7 @@ public class azulSLR1 {
         switch (R) {
             case 1 -> { //CHECKIT
                 // PROG ->  DATASEC PRIN
-                PROG_c[++topePROG_C] = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c--] + "\n\tVUEL\tO\n\tFIN\n";
+                PROG_c[++topePROG_C] = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c--] + "\n\tVUEL\t0\n\tFIN\n";
                 //PROG_c = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c] + "\tVUEL\tO\n\tFIN";
             }
             case 8 -> {
@@ -557,7 +556,7 @@ public class azulSLR1 {
                 // COND -> cierto ( EXP ) haz BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
-                aux = EXP_c[topeEXP_c--] + PosA + "\n\tSAL\t" + PosB;
+                aux = EXP_c[topeEXP_c--] + PosA + "\n\tSAL\t" + PosB +"\n";
                 aux = aux + "\n(" + PosA + ")\tMUE\tRC,RC" + BLQ_c[topeBLQ_c--];
                 COND_c[++topeCOND_c] = aux + "\n(" + PosB + ")\tMUE\tRC,RC";
             }
@@ -566,14 +565,14 @@ public class azulSLR1 {
                 PosA = GenEtq();
                 PosB = GenEtq();
                 PosC = GenEtq();
-                aux = "\n(" + PosA + ")\tMUE\tRC, RC" + EXP_c[topeEXP_c--] + PosB + "\n\tSAL\t" + PosC;
-                aux = aux + "\n(" + PosB + ")\tMUE\tRC, RC" + BLQ_c[topeBLQ_c--] + "\n\tSAL\t" + PosA;
+                aux = "\n(" + PosA + ")\tMUE\tRC, RC" + EXP_c[topeEXP_c--] + PosB + "\n\tSAL\t" + PosC +"\n";
+                aux = aux + "\n(" + PosB + ")\tMUE\tRC, RC" + BLQ_c[topeBLQ_c--] + "\n\tSAL\t" + PosA +"\n";
                 CICLO_c[++topeCICLO_c] = aux + "\n(" + PosC + ")\tMUE\tRC, RC";
             }
             case 19 -> {
                 // ASIG -> id asig E
                 ChkTipo(TipoEsp, E_t[topeE_t--]);
-                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\n\tMUE\t" + E_v[topeE_v--] + "," + VarIzq + "\n";
+                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\n\tMUE\t" + E_v[topeE_v--] + ", " + VarIzq + "\n";
             }
             case 20 -> {
                 // EXP  ->  E1 OP E2
@@ -592,7 +591,7 @@ public class azulSLR1 {
 				//E_v2
 				Ev1 = E_v [topeE_v--];
                //EXP.c = E1.c|E2.c|MUE E1.v,RA|MUE E2.v,RB|instAri(CMP,E1.t) RA,RB|OP.c
-                EXP_c[++topeEXP_c]= Ec1+Ec2 + "\n\tMUE\t"+Ev1+", RA\n\tMUE\t"+Ev2+",RB"+instAri("\n\tCMPE\t",Et1)+"RA, RB\n\t"+OP_c[topeOP_c--];
+                EXP_c[++topeEXP_c]= Ec1+Ec2 + "\n\tMUE\t"+Ev1+", RA\n\tMUE\t"+Ev2+",RB"+instAri("\n\tCMPE\t",Et1)+"RA, RB\t"+OP_c[topeOP_c--];
             }
             case 21 -> {
                 // E -> E + F
