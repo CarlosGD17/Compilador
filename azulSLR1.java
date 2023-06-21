@@ -160,7 +160,8 @@ public class azulSLR1 {
             return A;
             //return "Tipo de A y B si son iguales";
         }
-        System.exit(4);
+        System.out.println(" ! ERROR: En el tipo de datos [" +A +", " +B +"], cerca del renglón " + RENGLON + "\n");
+        exit(4);
         return null;
     }
 
@@ -198,9 +199,9 @@ public class azulSLR1 {
 
     public static String instAri(String A, String B) { //REVISADO
         if (B.equals("decimal")) {
-            return A; // + "F";
+            return A + "F";
         } else {
-            return A ;//+ "E";
+            return A + "E";
         }
     }
 
@@ -455,7 +456,7 @@ public class azulSLR1 {
             if (m == 1117) {
                 //printTabla();
                 System.out.println("-> Parser SLR terminado con exito   :)");
-                System.out.println("---Codigo generado:---\n" + PROG_c[topePROG_C]);
+                System.out.println("   ---Codigo generado---\n" + PROG_c[topePROG_C]);
                 //pausa();
                 exit(0);
             } else {
@@ -516,7 +517,7 @@ public class azulSLR1 {
         switch (R) {
             case 1 -> { //CHECKIT
                 // PROG ->  DATASEC PRIN
-                PROG_c[++topePROG_C] = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c--] + "\n\tVUEL\t0\n\tFIN\n";
+                PROG_c[++topePROG_C] = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c--] + "\n\n\tVUEL\t0\n\tFIN\n";
                 //PROG_c = DecV + VarTemps() + "\n" + PRIN_c[topePrin_c] + "\tVUEL\tO\n\tFIN";
             }
             case 8 -> {
@@ -548,7 +549,7 @@ public class azulSLR1 {
                 // COND -> cierto ( EXP ) haz BLQ falso BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
-                aux = EXP_c[topeEXP_c--] + PosA + BLQ_c[topeBLQ_c--] + "\n\tSAL\t" + PosB;
+                aux = EXP_c[topeEXP_c--] + PosA + BLQ_c[topeBLQ_c--] + "\tSAL\t" + PosB + "\n";
                 aux = aux + "\n(" + PosA + ")\tMUE\tRC, RC" + BLQ_c[topeBLQ_c--];
                 COND_c[++topeCOND_c] = aux + "\n(" + PosB + ")\tMUE\tRC, RC";
             }
@@ -572,7 +573,7 @@ public class azulSLR1 {
             case 19 -> {
                 // ASIG -> id asig E
                 ChkTipo(TipoEsp, E_t[topeE_t--]);
-                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\n\tMUE\t" + E_v[topeE_v--] + ", " + VarIzq + "\n";
+                ASIG_c[++topeASIG_c] = E_c[topeE_c--] + "\n\tMUE\t" + E_v[topeE_v--] + ", " + VarIzq;
             }
             case 20 -> {
                 // EXP  ->  E1 OP E2
@@ -591,7 +592,7 @@ public class azulSLR1 {
 				//E_v2
 				Ev1 = E_v [topeE_v--];
                //EXP.c = E1.c|E2.c|MUE E1.v,RA|MUE E2.v,RB|instAri(CMP,E1.t) RA,RB|OP.c
-                EXP_c[++topeEXP_c]= Ec1+Ec2 + "\n\tMUE\t"+Ev1+", RA\n\tMUE\t"+Ev2+",RB"+instAri("\n\tCMPE\t",Et1)+"RA, RB\t"+OP_c[topeOP_c--];
+                EXP_c[++topeEXP_c]= Ec1+Ec2 + "\n\tMUE\t"+Ev1+", RA\n\tMUE\t"+Ev2+",RB"+instAri("\n\tCMP",Et1)+"\tRA, RB\t"+OP_c[topeOP_c--];
             }
             case 21 -> {
                 // E -> E + F
