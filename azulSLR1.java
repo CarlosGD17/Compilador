@@ -549,7 +549,7 @@ public class azulSLR1 {
                 // COND -> cierto ( EXP ) haz BLQ falso BLQ fin_cond
                 PosA = GenEtq();
                 PosB = GenEtq();
-                aux = EXP_c[topeEXP_c--] + PosA + BLQ_c[topeBLQ_c--] + "\tSAL\t" + PosB + "\n";
+                aux = EXP_c[topeEXP_c--] + PosA + BLQ_c[topeBLQ_c--] + "n\tSAL\t" + PosB + "\n";
                 aux = aux + "\n(" + PosA + ")\tMUE\tRC, RC" + BLQ_c[topeBLQ_c--];
                 COND_c[++topeCOND_c] = aux + "\n(" + PosB + ")\tMUE\tRC, RC";
             }
